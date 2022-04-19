@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Product },
+  models: { User, Product, Cart },
 } = require('../server/db');
 
 /**
@@ -19,6 +19,7 @@ async function seed() {
     User.create({ username: 'cody', password: '123' }),
     User.create({ username: 'murphy', password: '123' }),
   ]);
+
   // name: unknown;
   // description: unknown;
   // price: unknown;
@@ -49,6 +50,23 @@ async function seed() {
       stock: 20,
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/6/65/AK-47_type_II_noBG.png',
+    }),
+  ]);
+  const carts = await Promise.all([
+    Cart.create({
+      quantity: 1,
+      userId: users[0].id,
+      productId: products[0].id,
+    }),
+    Cart.create({
+      quantity: 1,
+      userId: users[0].id,
+      productId: products[2].id,
+    }),
+    Cart.create({
+      quantity: 1,
+      userId: users[0].id,
+      productId: products[1].id,
     }),
   ]);
 
