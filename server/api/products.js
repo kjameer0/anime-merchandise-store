@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const {
   models: { User, Product, Cart },
-} = require('../db');
+} = require("../db");
 
 // GET /api/products
 router.get("/", async (req, res, next) => {
