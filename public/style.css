@@ -39,3 +39,34 @@ form div {
   margin: 0rem;
   padding: 0rem;
 }
+
+.all-products{
+  display: flex;
+  justify-content: center;
+
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-style: groove;
+  border-radius: 8px 8px 8px 8px;
+  flex-basis: calc(25% - 40px);
+  margin: 10px;
+}
+
+.container img{
+  width: 25%;
+  height: auto;
+}
+
+.add-to-btn{
+
+}
+.add-to-btn:hover{
+
+}
+.add-to-btn:visited{
+
+}

@@ -4,7 +4,7 @@ module.exports = router;
 router.use("/users", require("./users"));
 
 // add the /cart
-router.use("/cart", require("./cart"));
+//router.use("/cart", require("./cart"));
 
 // add the /products
 router.use("/products", require("./products"));
