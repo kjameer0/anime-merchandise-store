@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { setProductsThunk } from '../store/allProducts';
 export class Products extends Component {
+  componentDidMount() {
+    this.props.fetchProducts()
+  }
   render() {
-    const { products } = this.props;
+    const { products } = this.props || [];
     return (
       <div className="all-products">
         {products.map((product) => (
@@ -23,9 +26,9 @@ export class Products extends Component {
 
 const mapStateToProps = (state) => ({ products: state.products });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchProducts: () => dispatch(fetchProducts()),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  fetchProducts: () => dispatch(setProductsThunk()),
+});
 
 // export default connect(mapStateToProps, mapDispatchToProps)(AllProducts);
-export default connect(mapStateToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);
