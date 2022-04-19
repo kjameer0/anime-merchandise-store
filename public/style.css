@@ -10,6 +10,12 @@ label {
   display: block;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 nav a {
   display: inline-block;
   margin: 1em;
@@ -18,4 +24,16 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.form-control {
+}
+
+.form-title {
+  margin-left: 1rem;
+}
+
+.logo {
+  font-size: 2rem;
+  letter-spacing: 1px;
 }
