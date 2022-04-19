@@ -1,7 +1,31 @@
-import React from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const Products = () => {
-  return <div>all products</div>;
-};
+export class Products extends Component {
+  render() {
+    const { products } = this.props;
+    return (
+      <div className="all-products">
+        {products.map((product) => (
+          <div key={product.id} className="container">
+            <img src={product.imageUrl} alt={product.name} />
+            <p>{product.name}</p>
+            <p>{product.price}</p>
+            <button type="button" className="blue buybtn">
+              Add to Cart
+            </button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
 
-export default Products;
+const mapStateToProps = (state) => ({ products: state.products });
+
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchProducts: () => dispatch(fetchProducts()),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(AllProducts);
+export default connect(mapStateToProps)(Products);
