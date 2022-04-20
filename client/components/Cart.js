@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
 export default class Cart extends Component {
   constructor(props) {
@@ -8,7 +8,7 @@ export default class Cart extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  handleOnChange = (event) => {};
+  handleOnChange = event => {};
   componentDidMount() {
     // this.props.fetchCart();
 
@@ -18,25 +18,24 @@ export default class Cart extends Component {
           id: 1,
           quantity: 3,
           product: {
-            name: 'Weber Traveler Portable Propane Gas Grill - Black - 9010001',
+            name: "Weber Traveler Portable Propane Gas Grill - Black - 9010001",
             description:
-              'Ready, set, grill on the go! The Weber Traveler portable gas BBQ grill offers 320 square inches of cooking space to create the grilled foods you love anytime, anywhere. Weber Traveler gas grills are perfect for tailgating, camping or small spaces like apartment balconies. With the push of a button, the grill ignites quickly and easily. The durab',
+              "Ready, set, grill on the go! The Weber Traveler portable gas BBQ grill offers 320 square inches of cooking space to create the grilled foods you love anytime, anywhere. Weber Traveler gas grills are perfect for tailgating, camping or small spaces like apartment balconies. With the push of a button, the grill ignites quickly and easily. The durab",
             price: 3000.0,
             stock: 20,
             imageUrl:
-              'https://cdn.shocho.co/sc-image/3/0/5/e/305e08558e4130ae1c2609cf93d2b1df.jpg?i10c=img.resize(width:500,height:500)',
+              "https://cdn.shocho.co/sc-image/3/0/5/e/305e08558e4130ae1c2609cf93d2b1df.jpg?i10c=img.resize(width:500,height:500)",
           },
         },
         {
           id: 2,
           quantity: 3,
           product: {
-            name: 'mystery box',
-            description: 'What is it?',
+            name: "mystery box",
+            description: "What is it?",
             price: 20000.0,
             stock: 20,
-            imageUrl:
-              'https://powelllacrosse.com/wp-content/uploads/2020/04/mysterybox.jpg',
+            imageUrl: "https://powelllacrosse.com/wp-content/uploads/2020/04/mysterybox.jpg",
           },
         },
       ],
@@ -48,15 +47,17 @@ export default class Cart extends Component {
     return (
       <div>
         <div className="all-cart">
-          {userCart.map((cart) => (
-            <div className="container cart" key={cart.id}>
-              <img src={cart.product.imageUrl} alt={cart.product.name} />
-              <p>{cart.product.name}</p>
-              <CartOptions
-                quantity={cart.quantity}
-                onChange={this.handleOnChange}
-              />
-              <div>
+          {userCart.map(cart => (
+            <div className="cart" key={cart.id}>
+              <div className="cart-data">
+                <img src={cart.product.imageUrl} alt={cart.product.name} />
+                <div className="cart-info">
+                  <p className="product-name">{cart.product.name}</p>
+                  <p className="cart-price">${cart.product.price}</p>
+                  <CartOptions quantity={cart.quantity} onChange={this.handleOnChange} />
+                </div>
+              </div>
+              <div className="cart-delete">
                 <button type="button">remove from cart</button>
               </div>
             </div>
@@ -69,15 +70,9 @@ export default class Cart extends Component {
   }
 }
 
-const SubTotal = (props) => {
-  const totalItem = props.userCart.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
-  const totalCost = props.userCart.reduce(
-    (sum, item) => sum + item.quantity * item.product.price,
-    0
-  );
+const SubTotal = props => {
+  const totalItem = props.userCart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalCost = props.userCart.reduce((sum, item) => sum + item.quantity * item.product.price, 0);
   return (
     <div id="subtotal">
       <h3>
@@ -87,13 +82,13 @@ const SubTotal = (props) => {
   );
 };
 
-const CartOptions = (props) => {
+const CartOptions = props => {
   const quantity = Array.from({ length: props.quantity }, (_, i) => i + 1);
   return (
     <label>
       quantity:
       <select defaultValue={props.quantity} onChange={props.onChange}>
-        {quantity.map((number) => (
+        {quantity.map(number => (
           <option value={number} key={number}>
             {number}
           </option>
