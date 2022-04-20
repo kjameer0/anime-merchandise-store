@@ -27,12 +27,21 @@ async function seed() {
   // imageUrl: unknown;
   const products = await Promise.all([
     Product.create({
+<<<<<<< HEAD
       name: "Propane Jet Pack",
       description:
         "This rebel soldier joins Medicis Space Program, and has a brief flight on a propane fuelled jetpack!",
       price: 10000.0,
       stock: 20,
       imageUrl: "https://i.ytimg.com/vi/cTtdz626st4/maxresdefault.jpg",
+=======
+      name: "Liver",
+      description:
+        "The liver is a major organ only found in vertebrates which performs many essential biological functions such as detoxification of the organism, and the synthesis of proteins and biochemicals necessary for digestion and growth.",
+      price: 10000.0,
+      stock: 20,
+      imageUrl: "https://www.lifespan.io/wp-content/uploads/2020/11/liver.jpg",
+>>>>>>> market
     }),
     Product.create({
       name: "mystery box",
@@ -43,6 +52,7 @@ async function seed() {
         "https://powelllacrosse.com/wp-content/uploads/2020/04/mysterybox.jpg",
     }),
     Product.create({
+<<<<<<< HEAD
       name: "Weber Traveler Portable Propane Gas Grill - Black - 9010001",
       description:
         "Ready, set, grill on the go! The Weber Traveler portable gas BBQ grill offers 320 square inches of cooking space to create the grilled foods you love anytime, anywhere. Weber Traveler gas grills are perfect for tailgating, camping or small spaces like apartment balconies. With the push of a button, the grill ignites quickly and easily. The durab",
@@ -50,6 +60,15 @@ async function seed() {
       stock: 20,
       imageUrl:
         "https://cdn.shocho.co/sc-image/3/0/5/e/305e08558e4130ae1c2609cf93d2b1df.jpg?i10c=img.resize(width:500,height:500)",
+=======
+      name: "AK-47",
+      description:
+        "The AK-47, officially known as the Avtomat Kalashnikov, is a gas-operated assault rifle that is chambered for the 7.62 x 39mm cartridge",
+      price: 3000.0,
+      stock: 20,
+      imageUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/6/65/AK-47_type_II_noBG.png",
+>>>>>>> market
     }),
     Product.create({
       name: "Heart Containers",
