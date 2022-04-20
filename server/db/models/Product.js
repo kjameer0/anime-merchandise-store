@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require("sequelize");
+const db = require("../db");
 
-module.exports = db.define('product', {
+module.exports = db.define("product", {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -11,7 +11,7 @@ module.exports = db.define('product', {
     },
   },
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -34,7 +34,7 @@ module.exports = db.define('product', {
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue:
-      'https://www.flexx.co/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png',
+      "https://www.flexx.co/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png",
     allowNull: false,
     validate: {
       notEmpty: true,
