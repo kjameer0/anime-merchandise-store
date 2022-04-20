@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setProductsThunk } from "../store/allProducts";
+import { setProductsThunk,clearProducts } from "../store/allProducts";
 import { Link } from "react-router-dom";
 
 export class Products extends Component {
   componentDidMount() {
     this.props.fetchProducts();
   }
+  componentWillUnmount() {
+    this.props.clearProducts()
+  }
   render() {
+    console.log(window.localStorage.getItem('token'))
     const { products } = this.props || [];
     return (
       <div className="all-products">
@@ -32,6 +36,7 @@ const mapStateToProps = state => ({ products: state.products });
 
 const mapDispatchToProps = dispatch => ({
   fetchProducts: () => dispatch(setProductsThunk()),
+  clearProducts: () => dispatch(clearProducts())
 });
 
 // export default connect(mapStateToProps, mapDispatchToProps)(AllProducts);

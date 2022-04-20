@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setSingleProductThunk } from "../store/singleProduct";
+import {
+  setSingleProductThunk,
+  clearSingleProduct,
+} from "../store/singleProduct";
 
 export class ProductDetail extends Component {
   componentDidMount() {
     this.props.setSingleProductThunk(this.props.match.params.id);
   }
-
+  componentWillUnmount() {
+    this.props.clearProductFromProps();
+  }
   render() {
     const {
       product: { name, description, price, stock, imageUrl },
@@ -23,12 +28,13 @@ export class ProductDetail extends Component {
   }
 }
 
-const mapState = state => ({
+const mapState = (state) => ({
   product: state.product,
 });
 
-const mapDispatch = dispatch => ({
-  setSingleProductThunk: id => dispatch(setSingleProductThunk(id)),
+const mapDispatch = (dispatch) => ({
+  setSingleProductThunk: (id) => dispatch(setSingleProductThunk(id)),
+  clearProductFromProps: () => dispatch(clearSingleProduct()),
 });
 
 export default connect(mapState, mapDispatch)(ProductDetail);
