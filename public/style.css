@@ -44,23 +44,61 @@ form div {
   display: flex;
   justify-content: center;
 }
-.container {
-  display: flex;
+.products{
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   border-style: groove;
   border-radius: 8px 8px 8px 8px;
   flex-basis: calc(25% - 40px);
   margin: 10px;
 }
 
-.container img {
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container img{
   width: 25%;
   height: auto;
 }
 
-.add-to-btn {
+.all-cart{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cart {
+  flex-direction: row;
+  border-style: groove;
+  width: 40%;
+  height: auto;
+  flex-basis: calc(25% - 40px);
+}
+
+.cart img{
+  width: 10%;
+  height: auto;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.cart p {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.cart label{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.cart button{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+#subtotal{
+  text-align: right;
+}
+.add-to-btn{
+
 }
 .add-to-btn:hover {
 }
