@@ -1,50 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-export default class Cart extends Component {
+import { setCartThunk } from '../store/cart';
+export class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = { cart: [] };
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   handleOnChange = (event) => {};
   componentDidMount() {
-    // this.props.fetchCart();
-
-    this.setState({
-      cart: [
-        {
-          id: 1,
-          quantity: 3,
-          product: {
-            name: 'Weber Traveler Portable Propane Gas Grill - Black - 9010001',
-            description:
-              'Ready, set, grill on the go! The Weber Traveler portable gas BBQ grill offers 320 square inches of cooking space to create the grilled foods you love anytime, anywhere. Weber Traveler gas grills are perfect for tailgating, camping or small spaces like apartment balconies. With the push of a button, the grill ignites quickly and easily. The durab',
-            price: 3000.0,
-            stock: 20,
-            imageUrl:
-              'https://cdn.shocho.co/sc-image/3/0/5/e/305e08558e4130ae1c2609cf93d2b1df.jpg?i10c=img.resize(width:500,height:500)',
-          },
-        },
-        {
-          id: 2,
-          quantity: 3,
-          product: {
-            name: 'mystery box',
-            description: 'What is it?',
-            price: 20000.0,
-            stock: 20,
-            imageUrl:
-              'https://powelllacrosse.com/wp-content/uploads/2020/04/mysterybox.jpg',
-          },
-        },
-      ],
-    });
+    this.props.fetchCart();
   }
   render() {
-    const { cart: userCart } = this.state;
-
+    const userCart = this.props.cart;
+    if (!userCart.length)
+      return (
+        <div id="empty-cart">
+          <h1>Cart is empty</h1>
+        </div>
+      );
     return (
       <div>
         <div className="all-cart">
@@ -103,11 +77,11 @@ const CartOptions = (props) => {
   );
 };
 
-// const mapState = (state) => {
-//   return { cart: state.cart };
-// };
-// const mapDispatch = (dispatch) => {
-//   return { fetchCart: () => dispatch(fetchCart()) };
-// };
+const mapState = (state) => {
+  return { cart: state.cart };
+};
+const mapDispatch = (dispatch) => {
+  return { fetchCart: () => dispatch(setCartThunk()) };
+};
 
-// export default connect(mapState, mapDispatch)(Cart);
+export default connect(mapState, mapDispatch)(Cart);

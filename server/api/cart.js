@@ -1,23 +1,36 @@
-const router = require("express").Router();
-const { Cart, User } = require("../db/models");
+const router = require('express').Router();
+const {
+  models: { User, Product, CartItem },
+} = require('../db');
 
-// GET /api/cart
-router.get("/", async (req, res, next) => {
+const requireToken = async (req, res, next) => {
   try {
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+// GET /api/cart
+router.get('/', requireToken, async (req, res, next) => {
+  try {
+    // const userId = req.user ? req.user.id : 1;
     const userId = req.user ? req.user.id : 1;
-    const cart = await Cart.findOrCreate({
-      where: {
-        userId: userId,
-      },
+    const cart = await CartItem.findAll({
+      where: { userId: userId },
+      include: [Product],
     });
-    res.send(await cart[0].getProducts());
+
+    res.send(cart);
   } catch (error) {
     next(error);
   }
 });
 
 // GET /api/cart/:id
-router.get("/:userId", async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
     const userId = req.user ? req.user.id : 1;
     const user = await User.findByPk(userId);
@@ -28,15 +41,15 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
-router.put("/", async (req, res, next) => {
+router.put('/', async (req, res, next) => {
   try {
     const userId = req.user ? req.user.id : 1;
-    const cart = await Cart.findOne({
+    const cart = await CartItem.findOne({
       where: {
         userId: userId,
       },
     });
-    await Cart.update({ status: "ORDERED" }, { where: { id: cart.id } });
+    await CartItem.update({ status: 'ORDERED' }, { where: { id: cart.id } });
     res.sendStatus(200);
   } catch (error) {
     next(error);
@@ -44,10 +57,10 @@ router.put("/", async (req, res, next) => {
 });
 
 // POST /api/cart
-router.post("/:id", async (req, res, next) => {
+router.post('/:id', async (req, res, next) => {
   try {
     const userId = req.user ? req.user.id : 1;
-    const cart = await Cart.findOrCreate({
+    const cart = await CartItem.findOrCreate({
       where: {
         userId: userId,
       },
@@ -59,11 +72,11 @@ router.post("/:id", async (req, res, next) => {
 });
 
 // DELETE /api/cart/:id
-router.delete("/:id", async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const userId = req.user ? req.user.id : 1;
-    const cart = await Cart.findOne({
+    const cart = await CartItem.findOne({
       where: {
         userId: userId,
       },
@@ -75,10 +88,10 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 // PUT /api/cart/:id
-router.put("/:id", async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
-    const cartItem = await Cart.findByPk(id);
+    const cartItem = await CartItem.findByPk(id);
     const updatedItem = await cartItem.update(req.body);
     res.send(updatedItem);
   } catch (error) {

@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Product, Cart },
+  models: { User, Product, CartItem },
 } = require('../server/db');
 
 /**
@@ -53,17 +53,17 @@ async function seed() {
     }),
   ]);
   const carts = await Promise.all([
-    Cart.create({
+    CartItem.create({
       quantity: 1,
       userId: users[0].id,
       productId: products[0].id,
     }),
-    Cart.create({
+    CartItem.create({
       quantity: 1,
       userId: users[0].id,
       productId: products[2].id,
     }),
-    Cart.create({
+    CartItem.create({
       quantity: 1,
       userId: users[0].id,
       productId: products[1].id,

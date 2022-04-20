@@ -25,7 +25,13 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+#empty-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 
+}
 .form-control {
 }
 
