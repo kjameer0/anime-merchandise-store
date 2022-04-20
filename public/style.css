@@ -40,12 +40,11 @@ form div {
   padding: 0rem;
 }
 
-.all-products{
+.all-products {
   display: flex;
   justify-content: center;
-
 }
-.container{
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,17 +55,19 @@ form div {
   margin: 10px;
 }
 
-.container img{
+.container img {
   width: 25%;
   height: auto;
 }
 
-.add-to-btn{
-
+.add-to-btn {
 }
-.add-to-btn:hover{
-
+.add-to-btn:hover {
 }
-.add-to-btn:visited{
+.add-to-btn:visited {
+}
 
+.product-detail img {
+  max-width: 50%;
+  height: auto;
 }
