@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setProductsThunk, clearProducts } from '../store/allProducts';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setProductsThunk, clearProducts } from "../store/allProducts";
+import { Link } from "react-router-dom";
 
 export class Products extends Component {
   componentDidMount() {
     this.props.fetchProducts();
   }
   render() {
-    console.log(window.localStorage.getItem('token'));
+    console.log(window.localStorage.getItem("token"));
     const { products } = this.props || [];
     return (
       <div className="all-products">
@@ -16,7 +16,7 @@ export class Products extends Component {
           <div key={product.id} className="container products">
             <img src={product.imageUrl} alt={product.name} />
             <p>{product.name}</p>
-            <p>{product.price}</p>
+            <p>${product.price}</p>
             <button type="button" className="blue buybtn">
               Add to Cart
             </button>
