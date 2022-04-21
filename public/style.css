@@ -5,11 +5,9 @@ body {
 a {
   text-decoration: none;
 }
-
 label {
   display: block;
 }
-
 nav {
   display: flex;
   justify-content: space-between;
@@ -26,18 +24,23 @@ nav a {
   background-repeat: no-repeat;
   transition: background-size 0.3s, background-position 0s 0.3s;
 }
-
+/*
+// this was messing with MUI form components - Kyle
+form div {
+  margin: 1em;
+  display: inline-block;
+}
+*/
 nav a:hover {
   background-position: 100% 100%; /*OR bottom right*/
   background-size: 100% 2px;
 }
 
-form div {
-  margin: 1em;
-  display: inline-block;
-}
-
-.form-control {
+#empty-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
 .form-title {

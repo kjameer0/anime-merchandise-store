@@ -1,19 +1,10 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
 const {
-  models: { User, Product, Cart },
+  models: { User, Product },
 } = require("../db");
+const { checkIsAdmin } = require("./utils");
 
-async function checkIsAdmin (req,res,next) {
-  try {
-    const token = req.headers.authorization
-    const user = await User.findByToken(token)
-    if(user.admin=== true) next()
-    else res.sendStatus(401)
-  } catch (error) {
-    next(error)
-  }
-}
 // GET /api/products
 router.get("/", async (req, res, next) => {
   try {
