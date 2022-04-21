@@ -85,7 +85,7 @@ export class Cart extends Component {
 
         <SubTotal items={this.state.cart} />
 
-        <button type="button">checkout</button>
+        <button type="submit">checkout</button>
       </form>
     );
   }
