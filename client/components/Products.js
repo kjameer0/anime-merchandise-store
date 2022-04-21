@@ -7,7 +7,6 @@ import ProductCard from "./ProductCard";
 import { Grid, Container, Typography } from "@material-ui/core";
 import { addToCartThunk } from "../store/cart";
 
-
 export class Products extends Component {
   componentDidMount() {
     this.props.fetchProducts();
@@ -23,8 +22,8 @@ export class Products extends Component {
           <Typography variant="h2">Buy our shit</Typography>
           <Grid container>
             {products.map(product => (
-              <Grid item xs={12} md={4}>
-                <ProductCard product={product} key={product.id} />
+              <Grid item xs={12} md={4} key={product.id}>
+                <ProductCard product={product} />
               </Grid>
               /* 
           <div key={product.id} className="container products">
@@ -51,7 +50,9 @@ const mapStateToProps = state => ({ products: state.products });
 const mapDispatchToProps = dispatch => ({
   fetchProducts: () => dispatch(setProductsThunk()),
   clearProducts: () => dispatch(clearProducts()),
-  addToCartFromProps: (id) => {dispatch(addToCartThunk(id))}
+  addToCartFromProps: id => {
+    dispatch(addToCartThunk(id));
+  },
 });
 
 // export default connect(mapStateToProps, mapDispatchToProps)(AllProducts);

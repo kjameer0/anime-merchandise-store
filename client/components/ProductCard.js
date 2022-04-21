@@ -33,7 +33,9 @@ const ProductCard = props => {
   return (
     <Card className={classes.root}>
       <CardHeader className={classes.header} title={product.name} />
-      <CardMedia component="img" image={product.imageUrl} title="a picture" className={classes.media} />
+      <Link to={`/products/${product.id}`}>
+        <CardMedia component="img" image={product.imageUrl} title="a picture" className={classes.media} />
+      </Link>
 
       <CardContent className={classes.content}>
         <Typography component="p" className={classes.description}>
