@@ -88,7 +88,6 @@ export const addToCartThunk = (productInfo) => {
 };
 //
 export const updateCartThunk = (productInfo) => {
-  //array of all cart items
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem("token") || "";
@@ -98,7 +97,6 @@ export const updateCartThunk = (productInfo) => {
             authorization: token,
           },
         });
-        console.log(data)
         dispatch(updateCart(data));
       } else {
         //unfinished

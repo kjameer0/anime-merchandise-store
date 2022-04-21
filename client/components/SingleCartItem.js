@@ -33,7 +33,6 @@ class SingleCartItem extends Component {
 
   render() {
     const cart = this.props.cart || {};
-    const index = this.props.index;
     return (
       <div className="cart" key={cart.id}>
         <div className="cart-data">
