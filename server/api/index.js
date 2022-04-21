@@ -9,7 +9,7 @@ router.use("/cart", require("./cart"));
 // add the /products
 router.use("/products", require("./products"));
 
-router.use("/orders", require("./order"));
+router.use("/orders", require("./orders"));
 
 router.use((req, res, next) => {
   const error = new Error("Not Found");
