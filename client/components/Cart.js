@@ -8,27 +8,24 @@ import SingleCartItem from './SingleCartItem';
 export class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = { cart: [] };
-    this.handleOnChange = this.handleOnChange.bind(this);
     this.handleCheckout = this.handleCheckout.bind(this);
-    this.handleSingleRemove = this.handleSingleRemove.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    if (!prevProps.cart.length && this.props.cart.length) {
-      const newCart = [];
-      this.props.cart.map((cart) => {
-        newCart.push({
-          productId: cart.product.id,
-          quantity: cart.quantity,
-          price: cart.product.price,
-        });
-      });
-      this.setState({
-        cart: [...this.state.cart, ...newCart],
-      });
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (!prevProps.cart.length && this.props.cart.length) {
+  //     const newCart = [];
+  //     this.props.cart.map((cart) => {
+  //       newCart.push({
+  //         productId: cart.product.id,
+  //         quantity: cart.quantity,
+  //         price: cart.product.price,
+  //       });
+  //     });
+  //     this.setState({
+  //       cart: [...this.state.cart, ...newCart],
+  //     });
+  //   }
+  // }
   componentWillUnmount() {
     this.props.clearCart();
   }
@@ -55,7 +52,7 @@ export class Cart extends Component {
           ))}
         </div>
 
-        <SubTotal items={this.state.cart} />
+        <SubTotal items={this.props.cart} />
 
         <button type="button">checkout</button>
       </form>
@@ -66,7 +63,7 @@ export class Cart extends Component {
 const SubTotal = (props) => {
   const totalItem = props.items.reduce((sum, item) => sum + item.quantity, 0);
   const totalCost = props.items.reduce(
-    (sum, item) => sum + item.quantity * item.price,
+    (sum, item) => sum + item.quantity * item.product.price,
     0
   );
   return (

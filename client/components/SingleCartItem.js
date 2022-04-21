@@ -2,27 +2,34 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { setCartThunk } from "../store/cart";
 import SelectQuantity from "./SelectQuantity";
-import { clearCart } from "../store/cart";
+import { clearCart, deleteFromCartThunk, updateCartThunk } from "../store/cart";
 
 class SingleCartItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        price: 0,
-        quantity: 0,
-        productId: 0
+      price: 0,
+      quantity: 0,
+      productId: 0,
     };
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
-  componentDidMount(){
-      let cartItem = this.props.cart
-      this.setState({
-          price: cartItem.product.price,
-          quantity: cartItem.quantity,
-          productId: cartItem.product.id
-      })
+  componentDidMount() {
+    let cartItem = this.props.cart;
+    this.setState({
+      price: cartItem.product.price,
+      quantity: cartItem.quantity,
+      productId: cartItem.product.id,
+    });
   }
-  handleChange(event) {}
+
+  handleChange(event) {
+    let newVal = event.target.value;
+    this.props.updateCartFromProps({
+      quantity: Number(newVal),
+      id: this.props.cart.id,
+    });
+  }
 
   render() {
     const cart = this.props.cart || {};
@@ -36,12 +43,15 @@ class SingleCartItem extends Component {
             <p className="cart-price">${cart.product.price}</p>
             <SelectQuantity
               quantity={cart.quantity}
-              onChange={(event) => this.handleOnChange(event, index)}
+              onChange={(event) => this.handleChange(event)}
             />
           </div>
         </div>
         <div className="cart-delete">
-          <button type="button" onClick={() => this.handleSingleRemove(index)}>
+          <button
+            type="button"
+            onClick={() => this.props.deleteFromCartProps(cart.id)}
+          >
             remove from cart
           </button>
         </div>
@@ -50,9 +60,11 @@ class SingleCartItem extends Component {
   }
 }
 
-
 const mapDispatch = (dispatch) => {
-  return {};
+  return {
+    deleteFromCartProps: (id) => dispatch(deleteFromCartThunk(id)),
+    updateCartFromProps: (info) => dispatch(updateCartThunk(info)),
+  };
 };
 
 export default connect(null, mapDispatch)(SingleCartItem);
