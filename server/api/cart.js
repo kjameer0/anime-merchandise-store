@@ -1,20 +1,11 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
   models: { User, Product, CartItem },
-} = require('../db');
+} = require("../db");
+const { requireToken } = require("./utils");
 
-const requireToken = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization;
-    const user = await User.findByToken(token);
-    req.user = user;
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
 // GET /api/cart
-router.get('/', requireToken, async (req, res, next) => {
+router.get("/", requireToken, async (req, res, next) => {
   try {
     // const userId = req.user ? req.user.id : 1;
     const userId = req.user ? req.user.id : 1;
@@ -30,7 +21,7 @@ router.get('/', requireToken, async (req, res, next) => {
 });
 
 // GET /api/cart/:id
-router.get('/:userId', async (req, res, next) => {
+router.get("/:userId", async (req, res, next) => {
   try {
     const userId = req.user ? req.user.id : 1;
     const user = await User.findByPk(userId);
@@ -41,7 +32,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.put("/", async (req, res, next) => {
   try {
     const userId = req.user ? req.user.id : 1;
     const cart = await CartItem.findOne({
@@ -49,7 +40,7 @@ router.put('/', async (req, res, next) => {
         userId: userId,
       },
     });
-    await CartItem.update({ status: 'ORDERED' }, { where: { id: cart.id } });
+    await CartItem.update({ status: "ORDERED" }, { where: { id: cart.id } });
     res.sendStatus(200);
   } catch (error) {
     next(error);
@@ -57,7 +48,7 @@ router.put('/', async (req, res, next) => {
 });
 
 // POST /api/cart
-router.post('/:id', async (req, res, next) => {
+router.post("/:id", async (req, res, next) => {
   try {
     const userId = req.user ? req.user.id : 1;
     const cart = await CartItem.findOrCreate({
@@ -72,7 +63,7 @@ router.post('/:id', async (req, res, next) => {
 });
 
 // DELETE /api/cart/:id
-router.delete('/:id', async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const userId = req.user ? req.user.id : 1;
@@ -88,7 +79,7 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 // PUT /api/cart/:id
-router.put('/:id', async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const cartItem = await CartItem.findByPk(id);
