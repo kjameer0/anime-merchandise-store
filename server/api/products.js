@@ -1,21 +1,12 @@
-const router = require('express').Router();
-const { Op } = require('sequelize');
+const router = require("express").Router();
+const { Op } = require("sequelize");
 const {
   models: { User, Product },
-} = require('../db');
+} = require("../db");
+const { checkIsAdmin } = require("./utils");
 
-async function checkIsAdmin(req, res, next) {
-  try {
-    const token = req.headers.authorization;
-    const user = await User.findByToken(token);
-    if (user.admin === true) next();
-    else res.sendStatus(401);
-  } catch (error) {
-    next(error);
-  }
-}
 // GET /api/products
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const items = await Product.findAll({
       where: {
@@ -31,7 +22,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET /api/products/:id
-router.get('/:id', async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const item = await Product.findByPk(req.params.id);
     res.send(item);
@@ -41,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // POST /api/products
-router.post('/', checkIsAdmin, async (req, res, next) => {
+router.post("/", checkIsAdmin, async (req, res, next) => {
   try {
     const item = await Product.create(req.body);
     res.send(item);
@@ -66,7 +57,7 @@ router.post('/', checkIsAdmin, async (req, res, next) => {
 // });
 
 // DELETE /api/products/:id
-router.delete('/:id', async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const result = await Product.destroy({
       where: {
