@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 import { setProductsThunk, clearProducts } from "../store/allProducts";
 import { addProductThunk } from "../store/allProducts";
 import { Link } from "react-router-dom";
+import ProductCard from "./ProductCard";
+import { Grid, Container, Typography } from "@material-ui/core";
 import { addToCartThunk } from "../store/cart";
+
 
 export class Products extends Component {
   componentDidMount() {
@@ -16,7 +19,14 @@ export class Products extends Component {
     const { products } = this.props || [];
     return (
       <div className="all-products">
-        {products.map((product) => (
+        <Container>
+          <Typography variant="h2">Buy our shit</Typography>
+          <Grid container>
+            {products.map(product => (
+              <Grid item xs={12} md={4}>
+                <ProductCard product={product} key={product.id} />
+              </Grid>
+              /* 
           <div key={product.id} className="container products">
           <Link to={`/products/${product.id}`}>
             <img src={product.imageUrl} alt={product.name} />
@@ -27,15 +37,18 @@ export class Products extends Component {
               Add to Cart
             </button>
           </div>
-        ))}
+          */
+            ))}
+          </Grid>
+        </Container>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({ products: state.products });
+const mapStateToProps = state => ({ products: state.products });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   fetchProducts: () => dispatch(setProductsThunk()),
   clearProducts: () => dispatch(clearProducts()),
   addToCartFromProps: (id) => {dispatch(addToCartThunk(id))}

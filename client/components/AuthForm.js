@@ -1,11 +1,59 @@
 import React from "react";
 import { connect } from "react-redux";
 import { authenticate } from "../store";
+import { Button, Form, TextField, InputLabel, FormControl, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 /**
  * COMPONENT
  */
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(1),
+      width: "25ch",
+    },
+  },
+}));
+
 const AuthForm = props => {
+  const classes = useStyles();
+  const { name, displayName, handleSubmit, error } = props;
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit} name={name} className={classes.root}>
+        <div>
+          <h3>{displayName}</h3>
+          <FormControl>
+            <TextField label="Username" variant="outlined" name="username" />
+          </FormControl>
+        </div>
+        {name === "signup" && (
+          <div>
+            <FormControl>
+              <TextField label="email" variant="outlined" name="email" />
+            </FormControl>
+          </div>
+        )}
+        <div>
+          <FormControl>
+            <TextField label="password" variant="outlined" name="password" />
+          </FormControl>
+        </div>
+        <div>
+          <Button type="submit" variant="contained" color="primary">
+            {displayName}
+          </Button>
+        </div>
+      </form>
+      {error && error.response && <div> {error.response.data} </div>}
+    </div>
+  );
+};
+
+const OldAuthForm = props => {
   const { name, displayName, handleSubmit, error } = props;
 
   return (
