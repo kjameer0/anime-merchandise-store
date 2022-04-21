@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import SelectQuantity from './SelectQuantity';
 /**
  * COMPONENT
+ *
  */
+function handleChange(e) {
+  console.log();
+}
 export const Home = (props) => {
   const { username } = props;
 
   return (
     <div>
       <h3>Welcome, {username}</h3>
-      <SelectQuantity />
     </div>
   );
 };

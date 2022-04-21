@@ -12,13 +12,13 @@ export default class SelectQuantity extends Component {
   handleChange(event) {
     switch (event.target.value) {
       case DELETE:
-        this.props.OnDelete();
+        this.props.onDelete();
         break;
       case MORE_OPTIONS:
         this.setState({ hasOption: false });
         break;
       default:
-        this.props.onChange(event.target.value);
+        this.props.onChange(event);
         break;
     }
   }
@@ -26,9 +26,12 @@ export default class SelectQuantity extends Component {
     const quantityList = Array.from({ length: 9 }, (_, i) => i + 1);
     const { quantity, onDelete } = this.props;
     return this.state.hasOption ? (
-      <select defaultValue={quantity} onChange={this.handleChange}>
+      <select
+        defaultValue={quantity ? quantity : 1}
+        onChange={this.handleChange}
+      >
         {onDelete !== undefined ? (
-          <option value={DELETE}>0(delete)</option>
+          <option value={DELETE}>0 (delete)</option>
         ) : (
           <></>
         )}
