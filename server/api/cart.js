@@ -4,87 +4,49 @@ const {
 } = require("../db");
 const { requireToken } = require("./utils");
 
-// GET /api/cart
 router.get("/", requireToken, async (req, res, next) => {
   try {
-    // const userId = req.user ? req.user.id : 1;
-    const userId = req.user ? req.user.id : 1;
+    //get a list of the whole cart
+    const userId = req.user.id;
     const cart = await CartItem.findAll({
       where: { userId: userId },
       include: [Product],
     });
-
     res.send(cart);
   } catch (error) {
     next(error);
   }
 });
 
-// GET /api/cart/:id
-router.get("/:userId", async (req, res, next) => {
+router.put("/", requireToken, async (req, res, next) => {
   try {
-    const userId = req.user ? req.user.id : 1;
-    const user = await User.findByPk(userId);
-    const items = await user.getProducts();
-    res.send(items);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/", async (req, res, next) => {
-  try {
-    const userId = req.user ? req.user.id : 1;
-    const cart = await CartItem.findOne({
-      where: {
-        userId: userId,
-      },
-    });
-    await CartItem.update({ status: "ORDERED" }, { where: { id: cart.id } });
-    res.sendStatus(200);
+    const { id } = req.body;
+    const item = await CartItem.findOne({ where: { id }, include: [Product] });
+    const updatedItem = await item.update({ quantity: req.body.quantity });
+    res.status(201).send(updatedItem);
   } catch (error) {
     next(error);
   }
 });
 
 // POST /api/cart
-router.post("/:id", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
-    const userId = req.user ? req.user.id : 1;
-    const cart = await CartItem.findOrCreate({
-      where: {
-        userId: userId,
-      },
-    });
-    await cart[0].addProduct(req.params.id).then(() => res.sendStatus(200));
+    const userId = req.user;
+    req.body.userId = userId;
+    const item = await CartItem.create(req.body);
+    res.status(201).send(item);
   } catch (error) {
     next(error);
   }
 });
 
 // DELETE /api/cart/:id
-router.delete("/:id", async (req, res, next) => {
-  const { id } = req.params;
+router.delete("/", requireToken, async (req, res, next) => {
   try {
-    const userId = req.user ? req.user.id : 1;
-    const cart = await CartItem.findOne({
-      where: {
-        userId: userId,
-      },
-    });
-    await cart.removeProduct(id);
-    res.status(200).send(id);
-  } catch (error) {
-    next(error);
-  }
-});
-// PUT /api/cart/:id
-router.put("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const cartItem = await CartItem.findByPk(id);
-    const updatedItem = await cartItem.update(req.body);
-    res.send(updatedItem);
+    const cart = await CartItem.findByPk(req.body.id);
+    await cart.destroy();
+    res.status(200).send(cart);
   } catch (error) {
     next(error);
   }

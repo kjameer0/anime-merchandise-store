@@ -4,9 +4,11 @@ import history from "../history";
 const SET_CART = "SET_CART";
 const ADD_CART = "ADD_CART";
 const DELETE_ITEM = "DELETE_ITEM";
+const UPDATE_CART = "UPDATE_CART";
 const CLEAR_CART = "CLEAR_CART";
 const setCart = (cart) => ({ type: SET_CART, cart });
 const addToCart = (product) => ({ type: ADD_CART, product });
+const updateCart = (newCart) => ({ type: UPDATE_CART, newCart });
 const deleteFromCart = (product) => ({ type: DELETE_ITEM, product });
 
 export const clearCart = () => ({ type: CLEAR_CART, cart: [] });
@@ -41,10 +43,11 @@ export const deleteFromCartThunk = (productInfo) => {
     try {
       const token = window.localStorage.getItem("token") || "";
       if (token) {
-        const { data } = await axios.delete("/api/cart", productInfo, {
+        const { data } = await axios.delete("/api/cart/", {
           headers: {
             authorization: token,
           },
+          data: {id:productInfo},
         });
         dispatch(deleteFromCart(data));
       } else {
@@ -83,7 +86,30 @@ export const addToCartThunk = (productInfo) => {
     }
   };
 };
-
+//
+export const updateCartThunk = (productInfo) => {
+  return async (dispatch) => {
+    try {
+      const token = window.localStorage.getItem("token") || "";
+      if (token) {
+        const { data } = await axios.put("/api/cart/", productInfo, {
+          headers: {
+            authorization: token,
+          },
+        });
+        dispatch(updateCart(data));
+      } else {
+        //unfinished
+        let currentCart = window.localStorage.getItem("cart");
+        currentCart.push(productInfo);
+        window.localStorage.setItem("cart", currentCart);
+        dispatch(updateCart(productInfo));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 const initialState = [];
 export default function cartReducer(state = initialState, action) {
@@ -94,6 +120,11 @@ export default function cartReducer(state = initialState, action) {
       return [...state, action.product];
     case DELETE_ITEM:
       return state.filter((item) => item.id !== action.product.id);
+    case UPDATE_CART:
+      return state.map(item => {
+        if (item.id === action.newCart.id) return action.newCart
+        return item  
+      });
     case CLEAR_CART:
       return [];
     default:
