@@ -1,10 +1,9 @@
 "use strict";
-
 const {
   db,
   models: { User, Product, CartItem, Order },
 } = require("../server/db");
-
+const { faker } = require("@faker-js/faker"); 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
@@ -16,8 +15,8 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: "cody", password: "123" }),
-    User.create({ username: "murphy", password: "123" }),
+    User.create({ username: "cody", password: "123", email: 'cody123@gmail.com' }),
+    User.create({ username: "murphy", password: "123", email: 'murphy123@yahoo.com' }),
   ]);
 
   // name: unknown;
