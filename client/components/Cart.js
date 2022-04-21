@@ -1,15 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setCartThunk } from '../store/cart';
+import SelectQuantity from './SelectQuantity';
+import { clearCart } from '../store/cart';
+import SingleCartItem from './SingleCartItem';
+
 export class Cart extends Component {
   constructor(props) {
     super(props);
-    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleCheckout = this.handleCheckout.bind(this);
   }
 
-  handleOnChange = (event) => {};
+  // componentDidUpdate(prevProps) {
+  //   if (!prevProps.cart.length && this.props.cart.length) {
+  //     const newCart = [];
+  //     this.props.cart.map((cart) => {
+  //       newCart.push({
+  //         productId: cart.product.id,
+  //         quantity: cart.quantity,
+  //         price: cart.product.price,
+  //       });
+  //     });
+  //     this.setState({
+  //       cart: [...this.state.cart, ...newCart],
+  //     });
+  //   }
+  // }
+  componentWillUnmount() {
+    this.props.clearCart();
+  }
   componentDidMount() {
     this.props.fetchCart();
+  }
+  
+  handleCheckout(event) {
+    event.preventDefault();
   }
   render() {
     const userCart = this.props.cart;
@@ -20,40 +45,24 @@ export class Cart extends Component {
         </div>
       );
     return (
-      <div>
+      <form id="form-cart" onSubmit={this.handleCheckout}>
         <div className="all-cart">
-          {userCart.map((cart) => (
-            <div className="cart" key={cart.id}>
-              <div className="cart-data">
-                <img src={cart.product.imageUrl} alt={cart.product.name} />
-                <div className="cart-info">
-                  <p className="product-name">{cart.product.name}</p>
-                  <p className="cart-price">${cart.product.price}</p>
-                  <CartOptions
-                    quantity={cart.quantity}
-                    onChange={this.handleOnChange}
-                  />
-                </div>
-              </div>
-              <div className="cart-delete">
-                <button type="button">remove from cart</button>
-              </div>
-            </div>
+          {userCart.map((cart, index) => (
+            <SingleCartItem key={cart.id} cart={cart} index={index}/>
           ))}
         </div>
 
-        <SubTotal userCart={userCart} />
-      </div>
+        <SubTotal items={this.props.cart} />
+
+        <button type="submit">checkout</button>
+      </form>
     );
   }
 }
 
 const SubTotal = (props) => {
-  const totalItem = props.userCart.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
-  const totalCost = props.userCart.reduce(
+  const totalItem = props.items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalCost = props.items.reduce(
     (sum, item) => sum + item.quantity * item.product.price,
     0
   );
@@ -66,27 +75,14 @@ const SubTotal = (props) => {
   );
 };
 
-const CartOptions = (props) => {
-  const quantity = Array.from({ length: props.quantity }, (_, i) => i + 1);
-  return (
-    <label>
-      quantity:
-      <select defaultValue={props.quantity} onChange={props.onChange}>
-        {quantity.map((number) => (
-          <option value={number} key={number}>
-            {number}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-};
-
 const mapState = (state) => {
   return { cart: state.cart };
 };
 const mapDispatch = (dispatch) => {
-  return { fetchCart: () => dispatch(setCartThunk()) };
+  return {
+    fetchCart: () => dispatch(setCartThunk()),
+    clearCart: () => dispatch(clearCart()),
+  };
 };
 
 export default connect(mapState, mapDispatch)(Cart);
