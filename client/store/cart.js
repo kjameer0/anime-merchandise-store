@@ -24,7 +24,10 @@ export const setCartThunk = () => {
             authorization: token,
           },
         });
-        dispatch(setCart(data));
+        console.log(Date.parse(data[1].createdAt))
+        console.log(Date.parse(data[0].createdAt))
+
+        dispatch(setCart(data.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt))));
       } else {
         if (window.localStorage.getItem("cart")) {
           dispatch(setCart(window.localStorage.getItem("cart")));
@@ -74,9 +77,9 @@ export const addToCartThunk = (productInfo) => {
             authorization: token,
           },
         });
-        dispatch(addToCart(data));
+        // dispatch(addToCart(data));
       } else {
-        let currentCart = window.localStorage.getItem("cart");
+        let currentCart = window.localStorage.getItem("cart") || [];
         currentCart.push(productInfo);
         window.localStorage.setItem("cart", currentCart);
         dispatch(addToCart(productInfo));
@@ -116,8 +119,8 @@ export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cart;
-    case ADD_CART:
-      return [...state, action.product];
+    // case ADD_CART:
+    //   return [...state, action.product];
     case DELETE_ITEM:
       return state.filter((item) => item.id !== action.product.id);
     case UPDATE_CART:
