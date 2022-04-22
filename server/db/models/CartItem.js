@@ -1,12 +1,14 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require('sequelize');
+const db = require('../db');
+const Product = require('./Product');
+const Order = require('./Order');
 //note: only delete this comment after:
 //1. all table names in code reflect actual table names
-const Cart = db.define("cart", {
+const Cart = db.define('cart', {
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    defaultValue: 1
+    defaultValue: 1,
   },
   // userId: {
   //   type: Sequelize.INTEGER,
@@ -28,5 +30,28 @@ const Cart = db.define("cart", {
   //     defaultValue: "PENDING",
   //   },
 });
+Cart.getCart = function (userId, orderId = null) {
+  return Cart.findAll({
+    where: { userId, orderId: orderId },
+    include: Product,
+  });
+};
 
+Cart.checkout = async function (userId) {
+  const cart = await Cart.getCart(userId);
+  if (!cart.length) throw 'cart is empty?!';
+
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
+
+  const order = await Order.create({ userId, totalPrice });
+
+  cart.forEach((element) => {
+    element.setOrder(order);
+  });
+
+  return { order, cart };
+};
 module.exports = Cart;
