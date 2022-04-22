@@ -56,9 +56,9 @@ router.post('/', requireToken, async (req, res, next) => {
   }
 });
 
-router.put('/checkout', async (req, res, next) => {
+router.post('/checkout', requireToken, async (req, res, next) => {
   try {
-    const userId = 1;
+    const userId = req.user.id;
     res.status(201).send(await Order.checkout(userId));
   } catch (error) {
     next(error);
