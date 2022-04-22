@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Typography, CardHeader } from "@material-ui/core";
+import { Card, CardContent, CardMedia, Typography, CardHeader, CardActions, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
@@ -7,28 +7,35 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 140,
     width: "auto",
-    margin: "auto",
+    margin: "8px auto",
   },
   header: {
     borderBottom: "1px solid gray",
-    height: 30,
+    height: 42,
+    width: "100%",
     textOverflow: "clip",
     "& *": {
-      textOverflow: "ellipsis ellipsis",
+      textOverflow: "clip",
     },
+    overflow: "hidden",
+    display: "block",
+    lineClamp: 1,
   },
   root: {
     width: 350,
     height: 480,
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    display: "flex",
+    flexDirection: "column",
   },
   description: {
     textOverflow: "ellipsis ellipsis",
-    maxHeight: 100,
+    whiteSpace: "nowrap",
   },
   content: {
     maxHeight: 200,
+    flexGrow: 1,
   },
 }));
 
@@ -44,9 +51,12 @@ const ProductCard = props => {
 
       <CardContent className={classes.content}>
         <Typography component="p" className={classes.description}>
-          {product.description}
+          ${product.price}
         </Typography>
       </CardContent>
+      <CardActions style={{ alignSelf: "end" }}>
+        <Button>Add to Cart</Button>
+      </CardActions>
     </Card>
   );
 };

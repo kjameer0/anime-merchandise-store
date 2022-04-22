@@ -13,7 +13,6 @@ const useStyles = theme => ({
   description: {
     minHeight: 400,
     margin: "auto",
-    border: "1px solid black",
     margin: theme.spacing(5),
   },
   price: {
@@ -59,7 +58,7 @@ export class ProductDetail extends Component {
         </Grid>
         <Grid item xs className={classes.buttonBox}>
           <Button variant="contained" color="primary">
-            Purchase
+            Add to Cart
           </Button>
         </Grid>
       </Grid>
