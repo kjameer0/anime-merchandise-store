@@ -11,9 +11,7 @@ export class Products extends Component {
   componentDidMount() {
     this.props.fetchProducts();
   }
-  handleClick(evt) {
-    //thunk
-  }
+  
   render() {
     const { products } = this.props || [];
     return (
