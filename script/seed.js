@@ -405,19 +405,19 @@ async function seed() {
       quantity: 1,
       userId: users[0].id,
       productId: products[0].id,
-      orderId: 1,
+      orderId: null,
     }),
     CartItem.create({
       quantity: 1,
       userId: users[0].id,
       productId: products[2].id,
-      orderId: 2,
+      orderId: null,
     }),
     CartItem.create({
       quantity: 1,
       userId: users[0].id,
       productId: products[1].id,
-      orderId: 1,
+      orderId: null,
     }),
   ]);
 

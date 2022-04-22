@@ -9,7 +9,7 @@ router.get("/", requireToken, async (req, res, next) => {
     //get a list of the whole cart
     const userId = req.user.id;
     const cart = await CartItem.findAll({
-      where: { userId: userId },
+      where: { userId: userId, orderId:null },
       include: [Product],
     });
     res.send(cart);
@@ -30,11 +30,15 @@ router.put("/", requireToken, async (req, res, next) => {
 });
 
 // POST /api/cart
-router.post("/", async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
     const userId = req.user;
-    req.body.userId = userId;
-    const item = await CartItem.create(req.body);
+    console.log(req.body)
+    const [item, created] = await CartItem.findOrCreate({
+      where: { productId: req.body.id, orderId: null },
+    });
+    if (!created) item.update({quantity: item.quantity+1})
+    await item.setUser(userId);
     res.status(201).send(item);
   } catch (error) {
     next(error);
