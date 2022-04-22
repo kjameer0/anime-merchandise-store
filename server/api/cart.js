@@ -1,10 +1,10 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
-  models: { User, Product, CartItem },
-} = require("../db");
-const { requireToken } = require("./utils");
+  models: { User, Product, CartItem, Order },
+} = require('../db');
+const { requireToken } = require('./utils');
 
-router.get("/", requireToken, async (req, res, next) => {
+router.get('/', requireToken, async (req, res, next) => {
   try {
     //get a list of the whole cart
     const userId = req.user.id;
@@ -18,7 +18,7 @@ router.get("/", requireToken, async (req, res, next) => {
   }
 });
 
-router.put("/", requireToken, async (req, res, next) => {
+router.put('/', requireToken, async (req, res, next) => {
   try {
     const { id } = req.body;
     const item = await CartItem.findOne({ where: { id }, include: [Product] });
@@ -30,7 +30,7 @@ router.put("/", requireToken, async (req, res, next) => {
 });
 
 // POST /api/cart
-router.post("/", async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const userId = req.user;
     req.body.userId = userId;
@@ -42,11 +42,20 @@ router.post("/", async (req, res, next) => {
 });
 
 // DELETE /api/cart/:id
-router.delete("/", requireToken, async (req, res, next) => {
+router.delete('/', requireToken, async (req, res, next) => {
   try {
     const cart = await CartItem.findByPk(req.body.id);
     await cart.destroy();
     res.status(200).send(cart);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put('/checkout', requireToken, async (req, res, next) => {
+  try {
+    const userId = req.user;
+    res.status(201).send(await CartItem.checkout(userId));
   } catch (error) {
     next(error);
   }
