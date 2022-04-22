@@ -1,7 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import { Card, CardContent, CardMedia, Typography, CardHeader, CardActions, Button } from "@material-ui/core";
-=======
 import {
   Card,
   CardContent,
@@ -12,7 +9,6 @@ import {
   CardActions,
 } from "@material-ui/core";
 import { connect } from "react-redux";
->>>>>>> ddd7d41 (feat: add ot cart button)
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { addToCartThunk } from "../store/cart";
@@ -71,21 +67,15 @@ const ProductCard = (props) => {
           ${product.price}
         </Typography>
       </CardContent>
-<<<<<<< HEAD
-      <CardActions style={{ alignSelf: "end" }}>
-        <Button>Add to Cart</Button>
-=======
       <CardActions>
         <form
           onSubmit={(evt) => {
             evt.preventDefault();
-            console.log(product)
             props.addProductToCart(product)
           }}
         >
           <Button type="submit">Add to Cart</Button>
         </form>
->>>>>>> ddd7d41 (feat: add ot cart button)
       </CardActions>
     </Card>
   );

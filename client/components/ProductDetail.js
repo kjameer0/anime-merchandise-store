@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { setSingleProductThunk, clearSingleProduct } from "../store/singleProduct";
 import { Button, Typography, Grid } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { addToCartThunk } from "../store/cart";
 
 const useStyles = theme => ({
   image: {
@@ -57,9 +58,16 @@ export class ProductDetail extends Component {
           <Typography component="p">{description}</Typography>
         </Grid>
         <Grid item xs className={classes.buttonBox}>
-          <Button variant="contained" color="primary">
+        <form
+          onSubmit={(evt) => {
+            evt.preventDefault();
+            this.props.addProductToCart(this.props.product)
+          }}
+        >
+          <Button type ='submit' variant="contained" color="primary">
             Add to Cart
           </Button>
+          </form>
         </Grid>
       </Grid>
 
@@ -83,6 +91,7 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   setSingleProductThunk: id => dispatch(setSingleProductThunk(id)),
   clearProductFromProps: () => dispatch(clearSingleProduct()),
+  addProductToCart: (product) => dispatch(addToCartThunk(product))
 });
 
 export default connect(mapState, mapDispatch)(withStyles(useStyles)(ProductDetail));
