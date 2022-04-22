@@ -9,26 +9,8 @@ const Cart = db.define('cart', {
     allowNull: false,
     defaultValue: 1,
   },
-  // userId: {
-  //   type: Sequelize.INTEGER,
-  //   references: {
-  //     model: "users", // 'users' refers to table name
-  //     key: "id", // 'id' refers to column name in users table
-  //   },
-  // },
-  // productId: {
-  //   type: Sequelize.INTEGER,
-  //   references: {
-  //     model: "products", // 'users' refers to table name
-  //     key: "id", // 'id' refers to column name in users table
-  //   },
-  // },
-  //   status: {
-  //     type: Sequelize.ENUM("PENDING", "ORDERED"),
-  //     allowNull: false,
-  //     defaultValue: "PENDING",
-  //   },
 });
+
 Cart.getCart = function (userId, orderId = null) {
   return Cart.findAll({
     where: { userId, orderId: orderId },
