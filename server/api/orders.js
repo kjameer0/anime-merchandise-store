@@ -1,12 +1,12 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
 const {
   models: { User, Order },
-} = require("../db");
-const { requireToken } = require("./utils");
+} = require('../db');
+const { requireToken } = require('./utils');
 
 // /api/orders
-router.get("/", requireToken, async (req, res, next) => {
+router.get('/', requireToken, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
@@ -20,7 +20,7 @@ router.get("/", requireToken, async (req, res, next) => {
 });
 
 // /api/orders/:id
-router.get("/:id", requireToken, async (req, res, next) => {
+router.get('/:id', requireToken, async (req, res, next) => {
   try {
     const orderId = req.params.id;
     const order = await Order.findOne({
@@ -36,7 +36,7 @@ router.get("/:id", requireToken, async (req, res, next) => {
 
 // /api/orders
 //POST Route
-router.post("/", requireToken, async (req, res, next) => {
+router.post('/', requireToken, async (req, res, next) => {
   try {
     // array of cart items
     let { items, price } = req.body;
@@ -56,4 +56,12 @@ router.post("/", requireToken, async (req, res, next) => {
   }
 });
 
+router.put('/checkout', async (req, res, next) => {
+  try {
+    const userId = 1;
+    res.status(201).send(await Order.checkout(userId));
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = router;

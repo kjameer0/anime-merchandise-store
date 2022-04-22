@@ -52,13 +52,4 @@ router.delete('/', requireToken, async (req, res, next) => {
   }
 });
 
-router.put('/checkout', requireToken, async (req, res, next) => {
-  try {
-    const userId = req.user;
-    res.status(201).send(await CartItem.checkout(userId));
-  } catch (error) {
-    next(error);
-  }
-});
-
 module.exports = router;
