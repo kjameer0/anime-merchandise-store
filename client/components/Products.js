@@ -22,21 +22,9 @@ export class Products extends Component {
           <Typography variant="h2">Buy our shit</Typography>
           <Grid container>
             {products.map(product => (
-              <Grid item xs={12} md={4} key={product.id}>
-                <ProductCard product={product} />
+              <Grid key={product.id} item xs={12} md={4}>
+                <ProductCard product={product} key={product.id} />
               </Grid>
-              /* 
-          <div key={product.id} className="container products">
-          <Link to={`/products/${product.id}`}>
-            <img src={product.imageUrl} alt={product.name} />
-            <p>{product.name}</p>
-            <p>${product.price}</p>
-            </Link>
-            <button type="button" className="blue buybtn">
-              Add to Cart
-            </button>
-          </div>
-          */
             ))}
           </Grid>
         </Container>

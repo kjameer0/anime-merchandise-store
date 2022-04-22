@@ -41,20 +41,8 @@ router.post("/", checkIsAdmin, async (req, res, next) => {
   }
 });
 
-// PUT /api/products/:id
-// router.put("/:id", async (req, res, next) => {
-//   try {
-//     const [num, result] = await Product.update(req.body, {
-//       where: {
-//         id: req.params.id,
-//       },
-//       returning: true,
-//     });
-//     if (num) res.send(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+
+
 
 // DELETE /api/products/:id
 router.delete("/:id", async (req, res, next) => {
