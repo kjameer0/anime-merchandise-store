@@ -41,11 +41,21 @@ router.post("/", checkIsAdmin, async (req, res, next) => {
   }
 });
 
-
-
+// update products
+// PUT /api/products/:id
+router.put("/:id", checkIsAdmin, async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    product.set(req.body);
+    await product.save();
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // DELETE /api/products/:id
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", checkIsAdmin, async (req, res, next) => {
   try {
     const result = await Product.destroy({
       where: {
