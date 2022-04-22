@@ -11,6 +11,11 @@ const useStyles = makeStyles(theme => ({
   },
   header: {
     borderBottom: "1px solid gray",
+    height: 30,
+    textOverflow: "clip",
+    "& *": {
+      textOverflow: "ellipsis ellipsis",
+    },
   },
   root: {
     width: 350,
@@ -19,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   description: {
-    textOverflow: "ellipsis",
+    textOverflow: "ellipsis ellipsis",
     maxHeight: 100,
   },
   content: {
