@@ -56,6 +56,7 @@ nav a:hover {
 
 .all-products {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 .products {
