@@ -30,9 +30,9 @@ router.put("/", requireToken, async (req, res, next) => {
 });
 
 // POST /api/cart
-router.post("/", async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
-    const userId = req.user;
+    const userId = req.user.id;
     req.body.userId = userId;
     const item = await CartItem.create(req.body);
     res.status(201).send(item);
