@@ -34,7 +34,14 @@ router.post("/", requireToken, async (req, res, next) => {
   try {
     const userId = req.user.id;
     req.body.userId = userId;
-    const item = await CartItem.create(req.body);
+    let createdItem = await CartItem.create(req.body);
+    const item = await CartItem.findOne({
+      where: {
+        id: createdItem.id,
+      },
+      include: [{ model: User }, { model: Product }],
+    });
+    console.log(item);
     res.status(201).send(item);
   } catch (error) {
     next(error);
