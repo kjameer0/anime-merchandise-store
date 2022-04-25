@@ -29,8 +29,8 @@ Order.checkout = async function (userId, confirmation) {
   });
 
   return {
-    order: { confirmation: order.confirmation, totalPrice: order.totalPrice },
-    orderInfo,
+    summary: { confirmation: order.confirmation, totalPrice: order.totalPrice },
+    items: orderInfo,
   };
 };
 module.exports = Order;

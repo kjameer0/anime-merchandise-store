@@ -7,7 +7,7 @@ const checkoutOrder = (payload) => ({
   payload,
 });
 
-export const orderCheckoutThunk = (confirmationId) => {
+export const orderCheckoutThunk = (confirmationId, history) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem('token') || '';
@@ -29,7 +29,7 @@ export const orderCheckoutThunk = (confirmationId) => {
     } catch (error) {
       console.log(error);
     } finally {
-      // TODO: history.push('/confirmation');
+      history.push('/confirmation');
     }
   };
 };

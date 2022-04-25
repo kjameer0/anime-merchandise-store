@@ -82,8 +82,8 @@ export class Checkout extends Component {
         <div id="order-summary">
           <p>Summary of Order</p>
           <div className="all-orders">
-            {this.props.cart.map((cart, index) => (
-              <SingleOrderItem key={cart.product.id} cart={cart} />
+            {this.props.cart.map((cart) => (
+              <SingleOrderItem key={cart.product.id} order={cart} />
             ))}
           </div>
           <SubTotal items={this.props.cart} />
@@ -101,11 +101,12 @@ const mapStateToProps = (state) => ({
   address: state.auth.address,
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { history }) => {
   return {
     fetchCart: () => dispatch(setCartThunk()),
     clearCart: () => dispatch(clearCart()),
-    checkout: (confirmationId) => dispatch(orderCheckoutThunk(confirmationId)),
+    checkout: (confirmation) =>
+      dispatch(orderCheckoutThunk(confirmation, history)),
   };
 };
 
