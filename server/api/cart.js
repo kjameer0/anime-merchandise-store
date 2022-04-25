@@ -12,7 +12,7 @@ router.get('/', requireToken, async (req, res, next) => {
       where: { userId: userId, orderId: null },
       include: [Product],
     });
-    res.send(cart);
+    res.send(cart.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt)));
   } catch (error) {
     next(error);
   }
@@ -29,6 +29,7 @@ router.put('/', requireToken, async (req, res, next) => {
   }
 });
 
+
 // POST /api/cart
 router.post('/', requireToken, async (req, res, next) => {
   try {
@@ -37,7 +38,10 @@ router.post('/', requireToken, async (req, res, next) => {
     const [item, created] = await CartItem.findOrCreate({
       where: { productId: req.body.id, orderId: null },
     });
-    if (!created) item.update({ quantity: item.quantity + 1 });
+    if(created && req.body.quantity) {
+      await item.update({quantity: req.body.quantity})
+    }
+    if (!created) await item.update({quantity: item.quantity+req.body.quantity || item.quantity+1})
     await item.setUser(userId);
     res.status(201).send(item);
   } catch (error) {

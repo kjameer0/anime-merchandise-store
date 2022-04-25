@@ -11,6 +11,24 @@ export class Cart extends Component {
     this.handleCheckout = this.handleCheckout.bind(this);
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if (!prevProps.cart.length && this.props.cart.length) {
+  //     const newCart = [];
+  //     this.props.cart.map((cart) => {
+  //       newCart.push({
+  //         productId: cart.product.id,
+  //         quantity: cart.quantity,
+  //         price: cart.product.price,
+  //       });
+  //     });
+  //     this.setState({
+  //       cart: [...this.state.cart, ...newCart],
+  //     });
+  //   }
+  // }
+  // componentDidUpdate(prev) {
+    
+  // }
   componentWillUnmount() {
     this.props.clearCart();
   }
@@ -35,7 +53,7 @@ export class Cart extends Component {
       <form id="form-cart" onSubmit={this.handleCheckout}>
         <div className="all-cart">
           {userCart.map((cart, index) => (
-            <SingleCartItem key={cart.id} cart={cart} index={index} />
+            <SingleCartItem key={cart.product.id} cart={cart} index={index} />
           ))}
         </div>
 
