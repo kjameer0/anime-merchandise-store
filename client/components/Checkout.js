@@ -5,7 +5,7 @@ import { setCartThunk } from '../store/cart';
 import { clearCart } from '../store/cart';
 import { orderCheckoutThunk } from '../store/singleOrder';
 import SingleOrderItem from './SingleOrderItem';
-import SubTotal from './SubTotal';
+import SubTotal, { getCostTotal } from './SubTotal';
 
 const CLIENT_ID =
   'AcA34C5GAOSbQO0YP7JuUdhfyzk0BlTYIt-y2UaTwolNq5NAddiOOcqKCUQHYLM6vW_KIYYJD1QLBBjj';
@@ -13,8 +13,13 @@ const CLIENT_ID =
 export class Checkout extends Component {
   constructor(props) {
     super(props);
-    this.state = { totalPrice: 0 };
+    this.state = { totalPrice: '' };
     this.createOrder = this.createOrder.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.cart.length && this.props.cart.length) {
+      this.setState({ totalPrice: getCostTotal(this.props.cart) });
+    }
   }
   componentWillUnmount() {
     this.props.clearCart();
@@ -24,6 +29,7 @@ export class Checkout extends Component {
   }
   createOrder(data, actions) {
     const { email, firstName, lastName, address } = this.props;
+    const { totalPrice } = this.state;
     return actions.order.create({
       intent: 'CAPTURE',
       payer: {
@@ -45,7 +51,7 @@ export class Checkout extends Component {
         {
           amount: {
             currency_code: 'USD',
-            value: '10.00',
+            value: totalPrice,
           },
         },
       ],
@@ -53,9 +59,6 @@ export class Checkout extends Component {
   }
   onApprove(data, actions) {
     return actions.order.capture().then((details) => {
-      console.log(this.props);
-      console.log(details);
-      console.log(data);
       this.props.checkout(details.id);
     });
   }
