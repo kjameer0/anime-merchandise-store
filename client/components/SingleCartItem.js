@@ -23,12 +23,18 @@ class SingleCartItem extends Component {
     });
     console.log(this.state)
   }
+  componentDidUpdate(prev) {
+    if (prev.cart.quantity !== this.props.cart.quantity) {
+      this.setState({ quantity: this.props.cart.quantity });
+    }
+  }
 
   handleChange(event) {
     let newVal = event.target.value;
     this.props.updateCartFromProps({
       quantity: Number(newVal),
       id: this.props.cart.id,
+      product:this.props.cart.product
     });
   }
 

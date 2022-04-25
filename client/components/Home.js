@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SelectQuantity from './SelectQuantity';
-import { setCartThunk } from '../store/cart';
+import { setCartThunk, moveFromLocalToCart } from '../store/cart';
 /**
  * COMPONENT
  *
@@ -9,7 +9,7 @@ import { setCartThunk } from '../store/cart';
 function handleChange(e) {
   console.log();
 }
-export const Home = (props) => {
+export const Home =  (props) => {
   const { username } = props;
   props.setCart()
   return (
@@ -29,7 +29,8 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch) => {
   return {
-    setCart: () => dispatch(setCartThunk())
+    setCart: () => dispatch(setCartThunk()),
+    moveToCart: () => dispatch(moveFromLocalToCart())
   }
 }
 export default connect(mapState, mapDispatch)(Home);

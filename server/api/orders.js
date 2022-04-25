@@ -38,15 +38,11 @@ router.get('/:id', requireToken, async (req, res, next) => {
 //POST Route
 router.post('/', requireToken, async (req, res, next) => {
   try {
-    // array of cart items
     let { items, price } = req.body;
-    // order.items, // order.price
-
     const order = await Order.create({
       totalPrice: price,
       userId: req.user.id,
     });
-
     await order.addCarts(items);
     await order.save();
     console.log(await order.getCarts());

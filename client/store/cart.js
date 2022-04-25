@@ -13,14 +13,14 @@ const deleteFromCart = (product) => ({ type: DELETE_ITEM, product });
 
 export const clearCart = () => ({ type: CLEAR_CART, cart: [] });
 
-export const setCartThunk = () => {
+export const moveFromLocalToCart = () => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem("token");
-      if (token) {
+      if(token) {
         if (JSON.parse(window.localStorage.getItem("cart")).length) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
-            storageCart.forEach(async (cartItem, index) => {
+            storageCart.forEach(async (cartItem) => {
               const { data } = await axios.post("/api/cart/", cartItem, {
                 headers: {
                   authorization: token,
@@ -29,11 +29,33 @@ export const setCartThunk = () => {
               console.log(data)
             });
         }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+export const setCartThunk = () => {
+  return async (dispatch) => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        if (JSON.parse(window.localStorage.getItem("cart")).length) {
+          let storageCart = JSON.parse(window.localStorage.getItem("cart"));
+          for (let i = 0 ; i< storageCart.length; i++) {
+             await axios.post("/api/cart/", storageCart[i], {
+              headers: {
+                authorization: token,
+              },
+            });
+          }
+        }
         const { data } = await axios.get("/api/cart", {
           headers: {
             authorization: token,
           },
         });
+        console.log(data)
         dispatch(setCart(data));
         window.localStorage.setItem("cart", JSON.stringify([]));
       } else {
@@ -88,19 +110,21 @@ export const addToCartThunk = (productInfo) => {
             authorization: token,
           },
         });
-        // dispatch(addToCart(data));
+        dispatch(addToCart(data));
       } else {
         let localCart = JSON.parse(window.localStorage.getItem("cart"));
         let newCart;
+        let cartItem
         if (localCart.some((item) => item.product.id === productInfo.id)) {
           newCart = localCart.map((item) => {
             if (item.product.id === productInfo.id) {
               item.quantity = item.quantity + 1;
+              cartItem = item
             }
             return item;
           });
         } else {
-          let cartItem = {
+           cartItem = {
             quantity: 1,
             product: productInfo,
             id: productInfo.id,
@@ -112,7 +136,7 @@ export const addToCartThunk = (productInfo) => {
           "cart",
           JSON.stringify(newCart)
         );
-        //dispatch(addToCart(newCart));
+        dispatch(addToCart(cartItem));
       }
     } catch (error) {
       console.log(error);
@@ -135,6 +159,12 @@ export const updateCartThunk = (productInfo) => {
         //unfinished
         console.log("hi");
         let currentCart = JSON.parse(window.localStorage.getItem("cart"));
+        let newCart = currentCart.map(item => {
+          if (item.id === productInfo.id) {
+            item.quantity = productInfo.quantity
+          } 
+          return item
+        })
         currentCart.push(productInfo);
         window.localStorage.setItem("cart", JSON.stringify(currentCart));
         dispatch(updateCart(productInfo));
@@ -151,7 +181,16 @@ export default function cartReducer(state = initialState, action) {
     case SET_CART:
       return action.cart;
     case ADD_CART:
-      return [...state, action.product];
+        if(state.some(item => item.product.id === action.product.product.id)){
+          return state.map(item => {
+            if (item.product.id === action.product.product.id) {
+              item.quantity = item.quantity + 1
+            }
+            return item
+          }) 
+      }else {
+        return [...state, action.product]
+      }
     case DELETE_ITEM:
       return state.filter((item) => item.id !== action.product.id);
     case UPDATE_CART:
