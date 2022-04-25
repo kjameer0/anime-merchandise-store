@@ -3,10 +3,9 @@ const Sequelize = require('sequelize');
 const CartItem = require('./CartItem');
 
 const Order = db.define('order', {
-  confirmationId: {
+  confirmation: {
     type: Sequelize.STRING,
     allowNull: false,
-    primaryKey: true,
   },
   totalPrice: {
     type: Sequelize.BIGINT,
