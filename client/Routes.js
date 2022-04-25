@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
+import Orders from "./components/Orders";
 import { me } from "./store";
 import ProductDetail from "./components/ProductDetail";
 import Products from "./components/Products";
@@ -28,6 +29,7 @@ class Routes extends Component {
             <Route path="/products" exact component={Products} />
             <Route path="/products/:id" exact component={ProductDetail} />
             <Route path="/cart" exact component={Cart} />
+            <Route path="/orders" component={Orders} />
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -69,7 +71,7 @@ class Routes extends Component {
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
@@ -77,7 +79,7 @@ const mapState = state => {
   };
 };
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     loadInitialData() {
       dispatch(me());
