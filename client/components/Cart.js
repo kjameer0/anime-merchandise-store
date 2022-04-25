@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setCartThunk } from '../store/cart';
-import SelectQuantity from './SelectQuantity';
-import { clearCart } from '../store/cart';
-import SingleCartItem from './SingleCartItem';
-import { orderCheckoutThunk } from '../store/singleOrder';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setCartThunk } from "../store/cart";
+import SelectQuantity from "./SelectQuantity";
+import { clearCart } from "../store/cart";
+import SingleCartItem from "./SingleCartItem";
+import { orderCheckoutThunk } from "../store/singleOrder";
 export class Cart extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ export class Cart extends Component {
   //   }
   // }
   // componentDidUpdate(prev) {
-    
+
   // }
   componentWillUnmount() {
     this.props.clearCart();
@@ -53,7 +53,7 @@ export class Cart extends Component {
       <form id="form-cart" onSubmit={this.handleCheckout}>
         <div className="all-cart">
           {userCart.map((cart, index) => (
-            <SingleCartItem key={cart.product.id} cart={cart} index={index} />
+            <SingleCartItem key={index} cart={cart} index={index} />
           ))}
         </div>
 
@@ -65,25 +65,22 @@ export class Cart extends Component {
   }
 }
 
-const SubTotal = (props) => {
+const SubTotal = props => {
   const totalItem = props.items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalCost = props.items.reduce(
-    (sum, item) => sum + item.quantity * item.product.price,
-    0
-  );
+  const totalCost = props.items.reduce((sum, item) => sum + item.quantity * item.product.price, 0);
   return (
     <div id="subtotal">
       <h3>
-        Subtotal ({totalItem} item{totalItem !== 1 && 's'}): ${totalCost}
+        Subtotal ({totalItem} item{totalItem !== 1 && "s"}): ${totalCost}
       </h3>
     </div>
   );
 };
 
-const mapState = (state) => {
+const mapState = state => {
   return { cart: state.cart };
 };
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     fetchCart: () => dispatch(setCartThunk()),
     clearCart: () => dispatch(clearCart()),

@@ -6,29 +6,29 @@ const ADD_CART = "ADD_CART";
 const DELETE_ITEM = "DELETE_ITEM";
 const UPDATE_CART = "UPDATE_CART";
 const CLEAR_CART = "CLEAR_CART";
-const setCart = (cart) => ({ type: SET_CART, cart });
-const addToCart = (product) => ({ type: ADD_CART, product });
-const updateCart = (newCart) => ({ type: UPDATE_CART, newCart });
-const deleteFromCart = (product) => ({ type: DELETE_ITEM, product });
+const setCart = cart => ({ type: SET_CART, cart });
+const addToCart = product => ({ type: ADD_CART, product });
+const updateCart = newCart => ({ type: UPDATE_CART, newCart });
+const deleteFromCart = product => ({ type: DELETE_ITEM, product });
 
 export const clearCart = () => ({ type: CLEAR_CART, cart: [] });
 
 export const setCartThunk = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
         if (window.localStorage.getItem("cart")) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
           if (storageCart.length) {
-            storageCart.forEach(async (cartItem) => {
+            storageCart.forEach(async cartItem => {
               console.log(cartItem);
               const { data } = await axios.post("/api/cart/", cartItem, {
                 headers: {
                   authorization: token,
                 },
               });
-              console.log(data)
+              console.log(data);
             });
           }
         }
@@ -37,10 +37,9 @@ export const setCartThunk = () => {
             authorization: token,
           },
         });
-        console.log('you failure',data)
+        console.log("you failure", data);
         dispatch(setCart(data));
         window.localStorage.removeItem("cart");
-
       } else {
         if (window.localStorage.getItem("cart")) {
           // window.localStorage.clear()
@@ -58,8 +57,8 @@ export const setCartThunk = () => {
   };
 };
 
-export const deleteFromCartThunk = (productInfo) => {
-  return async (dispatch) => {
+export const deleteFromCartThunk = productInfo => {
+  return async dispatch => {
     try {
       const token = window.localStorage.getItem("token") || "";
       if (token) {
@@ -72,9 +71,7 @@ export const deleteFromCartThunk = (productInfo) => {
         dispatch(deleteFromCart(data));
       } else {
         let currentCart = window.localStorage.getItem("cart");
-        currentCart = currentCart.filter(
-          (element) => element.id !== productInfo.id
-        );
+        currentCart = currentCart.filter(element => element.id !== productInfo.id);
         window.localStorage.setItem("cart", currentCart);
         dispatch(deleteFromCart(productInfo));
       }
@@ -84,8 +81,8 @@ export const deleteFromCartThunk = (productInfo) => {
   };
 };
 
-export const addToCartThunk = (productInfo) => {
-  return async (dispatch) => {
+export const addToCartThunk = productInfo => {
+  return async dispatch => {
     try {
       const token = window.localStorage.getItem("token") || "";
       if (token) {
@@ -95,14 +92,14 @@ export const addToCartThunk = (productInfo) => {
           },
         });
         console.log(data);
-        // dispatch(addToCart(data));
+        dispatch(addToCart(data));
       } else {
         console.log(productInfo);
         let localCart = JSON.parse(window.localStorage.getItem("cart"));
         console.log(localCart);
         let newCart;
-        if (localCart.some((item) => item.product.id === productInfo.id)) {
-          newCart = localCart.map((item) => {
+        if (localCart.some(item => item.product.id === productInfo.id)) {
+          newCart = localCart.map(item => {
             if (item.product.id === productInfo.id) {
               item.quantity = item.quantity + 1;
             }
@@ -118,11 +115,8 @@ export const addToCartThunk = (productInfo) => {
           console.log("hi", localCart);
           newCart = localCart;
         }
-        localCart = window.localStorage.setItem(
-          "cart",
-          JSON.stringify(newCart)
-        );
-        //dispatch(addToCart(newCart));
+        localCart = window.localStorage.setItem("cart", JSON.stringify(newCart));
+        dispatch(addToCart(newCart));
       }
     } catch (error) {
       console.log(error);
@@ -130,8 +124,8 @@ export const addToCartThunk = (productInfo) => {
   };
 };
 //
-export const updateCartThunk = (productInfo) => {
-  return async (dispatch) => {
+export const updateCartThunk = productInfo => {
+  return async dispatch => {
     try {
       const token = window.localStorage.getItem("token") || "";
       if (token) {
@@ -143,7 +137,6 @@ export const updateCartThunk = (productInfo) => {
         dispatch(updateCart(data));
       } else {
         //unfinished
-        console.log("hi");
         let currentCart = window.localStorage.getItem("cart");
         currentCart.push(productInfo);
         window.localStorage.setItem("cart", currentCart);
@@ -161,11 +154,17 @@ export default function cartReducer(state = initialState, action) {
     case SET_CART:
       return action.cart;
     case ADD_CART:
+      for (let i = 0; i < state.length; i++) {
+        if (state[i].id === action.product.id) {
+          state[i].quantity += action.product.quantity;
+          return state;
+        }
+      }
       return [...state, action.product];
     case DELETE_ITEM:
-      return state.filter((item) => item.id !== action.product.id);
+      return state.filter(item => item.id !== action.product.id);
     case UPDATE_CART:
-      return state.map((item) => {
+      return state.map(item => {
         if (item.id === action.newCart.id) return action.newCart;
         return item;
       });
