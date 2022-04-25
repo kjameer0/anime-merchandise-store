@@ -21,6 +21,7 @@ class SingleCartItem extends Component {
       quantity: cartItem.quantity,
       productId: cartItem.product.id,
     });
+    console.log(this.state)
   }
 
   handleChange(event) {
