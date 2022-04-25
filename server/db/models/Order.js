@@ -4,7 +4,7 @@ const CartItem = require('./CartItem');
 
 const Order = db.define('order', {
   totalPrice: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
   },
 });
 
@@ -13,11 +13,12 @@ Order.checkout = async function (userId) {
   if (!orderInfo.length) throw 'cart is empty?!';
 
   const totalPrice = orderInfo.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => sum + item.product.price * 100 * item.quantity,
     0
   );
-
-  const order = await Order.create({ userId, totalPrice });
+  console.log(typeof totalPrice);
+  console.log(totalPrice);
+  const order = await Order.create({ userId, totalPrice: totalPrice });
 
   orderInfo.forEach((element) => {
     element.setOrder(order);
