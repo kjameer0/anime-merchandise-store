@@ -28,11 +28,7 @@ class Routes extends Component {
             <Route path="/products" exact component={Products} />
             <Route path="/products/:id" exact component={ProductDetail} />
             <Route path="/cart" exact component={Cart} />
-<<<<<<< Updated upstream
-            <Route path="/orders" component={Orders} />
-=======
             <Route path="/checkout" exact component={Checkout} />
->>>>>>> Stashed changes
             <Redirect to="/home" />
           </Switch>
         ) : (
