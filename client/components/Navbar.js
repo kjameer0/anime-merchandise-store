@@ -72,7 +72,11 @@ class Navbar extends Component {
                     Products
                   </Button>
                   <Button color="inherit" component={Link} to="/cart">
-                    <span className={classes.cartInfo}>{cart.length}</span>
+                    {cart.length > 0 ? (
+                      <span className={classes.cartInfo}>{cart.length}</span>
+                    ) : (
+                      <span style={{ display: "hidden" }}></span>
+                    )}
                     My Cart
                   </Button>
                   <Button color="inherit" onClick={handleClick}>
