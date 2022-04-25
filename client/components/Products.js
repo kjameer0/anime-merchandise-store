@@ -10,14 +10,18 @@ import { addToCartThunk } from "../store/cart";
 export class Products extends Component {
   componentDidMount() {
     this.props.fetchProducts();
+    const local = JSON.parse(window.localStorage.getItem("cart"));
+    if (!local) {
+      window.localStorage.setItem("cart", JSON.stringify([]));
+    }
   }
-  
+
   render() {
     const { products } = this.props || [];
     return (
       <div className="all-products">
         <Container>
-          <Typography variant="h2">Buy our shit</Typography>
+          <Typography variant="h2">Buy our stuff</Typography>
           <Grid container>
             {products.map(product => (
               <Grid key={product.id} item xs={12} md={4}>
