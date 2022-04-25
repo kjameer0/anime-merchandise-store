@@ -395,17 +395,6 @@ async function seed() {
     }),
   ]);
 
-  const orders = await Promise.all([
-    Order.create({
-      totalPrice: 500,
-      userId: 1,
-    }),
-    Order.create({
-      totalPrice: 1000000,
-      userId: 1,
-    }),
-  ]);
-
   const carts = await Promise.all([
     CartItem.create({
       quantity: 1,
