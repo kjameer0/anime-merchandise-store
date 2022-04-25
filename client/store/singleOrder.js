@@ -7,7 +7,7 @@ const checkoutOrder = (payload) => ({
   payload,
 });
 
-export const orderCheckoutThunk = () => {
+export const orderCheckoutThunk = (confirmationId) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem('token') || '';
@@ -15,7 +15,7 @@ export const orderCheckoutThunk = () => {
       if (token) {
         const { data } = await axios.post(
           '/api/orders/checkout',
-          {},
+          { confirmationId },
           {
             headers: {
               authorization: token,
