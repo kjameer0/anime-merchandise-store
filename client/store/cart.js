@@ -21,14 +21,12 @@ export const setCartThunk = () => {
         if (window.localStorage.getItem("cart")) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
           if (storageCart.length) {
-            storageCart.forEach(async (cartItem) => {
-              console.log(cartItem);
+            storageCart.forEach(async (cartItem, index) => {
               const { data } = await axios.post("/api/cart/", cartItem, {
                 headers: {
                   authorization: token,
                 },
               });
-              console.log(data)
             });
           }
         }
@@ -37,15 +35,11 @@ export const setCartThunk = () => {
             authorization: token,
           },
         });
-        console.log('you failure',data)
         dispatch(setCart(data));
         window.localStorage.removeItem("cart");
 
       } else {
         if (window.localStorage.getItem("cart")) {
-          // window.localStorage.clear()
-          console.log("hi local storage set thunk");
-          console.log(JSON.parse(window.localStorage.getItem("cart")));
           dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
         } else {
           window.localStorage.setItem("cart", JSON.stringify([]));
@@ -71,7 +65,7 @@ export const deleteFromCartThunk = (productInfo) => {
         });
         dispatch(deleteFromCart(data));
       } else {
-        let currentCart = window.localStorage.getItem("cart");
+        let currentCart = JSON.parse(window.localStorage.getItem("cart"));
         currentCart = currentCart.filter(
           (element) => element.id !== productInfo.id
         );
@@ -94,12 +88,9 @@ export const addToCartThunk = (productInfo) => {
             authorization: token,
           },
         });
-        console.log(data);
         // dispatch(addToCart(data));
       } else {
-        console.log(productInfo);
         let localCart = JSON.parse(window.localStorage.getItem("cart"));
-        console.log(localCart);
         let newCart;
         if (localCart.some((item) => item.product.id === productInfo.id)) {
           newCart = localCart.map((item) => {
@@ -115,7 +106,6 @@ export const addToCartThunk = (productInfo) => {
             id: productInfo.id,
           };
           localCart.push(cartItem);
-          console.log("hi", localCart);
           newCart = localCart;
         }
         localCart = window.localStorage.setItem(

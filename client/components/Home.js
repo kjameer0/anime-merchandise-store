@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SelectQuantity from './SelectQuantity';
+import { setCartThunk } from '../store/cart';
 /**
  * COMPONENT
  *
@@ -10,7 +11,7 @@ function handleChange(e) {
 }
 export const Home = (props) => {
   const { username } = props;
-
+  props.setCart()
   return (
     <div>
       <h3>Welcome, {username}</h3>
@@ -26,5 +27,9 @@ const mapState = (state) => {
     username: state.auth.username,
   };
 };
-
-export default connect(mapState)(Home);
+const mapDispatch = (dispatch) => {
+  return {
+    setCart: () => dispatch(setCartThunk())
+  }
+}
+export default connect(mapState, mapDispatch)(Home);
