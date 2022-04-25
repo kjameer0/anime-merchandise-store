@@ -20,15 +20,14 @@ export const setCartThunk = () => {
       if (token) {
         if (JSON.parse(window.localStorage.getItem("cart")).length) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
-          if (storageCart.length) {
             storageCart.forEach(async (cartItem, index) => {
               const { data } = await axios.post("/api/cart/", cartItem, {
                 headers: {
                   authorization: token,
                 },
               });
+              console.log(data)
             });
-          }
         }
         const { data } = await axios.get("/api/cart", {
           headers: {
