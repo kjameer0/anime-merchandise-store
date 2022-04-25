@@ -1,7 +1,11 @@
-import React from "react";
-import { connect } from "react-redux";
-import SelectQuantity from "./SelectQuantity";
+
+import React from 'react';
+import { connect } from 'react-redux';
+import SelectQuantity from './SelectQuantity';
+import { setCartThunk } from '../store/cart';
+
 import { Link } from "react-router-dom";
+
 /**
  * COMPONENT
  *
@@ -10,6 +14,7 @@ function handleChange(e) {
   console.log();
 }
 export const Home = (props) => {
+
   const { username, password, email, firstName, lastName, address } = props;
 
   return (
@@ -107,5 +112,9 @@ const mapState = (state) => {
     address: state.auth.address,
   };
 };
-
-export default connect(mapState)(Home);
+const mapDispatch = (dispatch) => {
+  return {
+    setCart: () => dispatch(setCartThunk())
+  }
+}
+export default connect(mapState, mapDispatch)(Home);
