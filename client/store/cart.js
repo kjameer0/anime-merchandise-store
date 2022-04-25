@@ -13,28 +13,6 @@ const deleteFromCart = (product) => ({ type: DELETE_ITEM, product });
 
 export const clearCart = () => ({ type: CLEAR_CART, cart: [] });
 
-export const moveFromLocalToCart = () => {
-  return async (dispatch) => {
-    try {
-      const token = window.localStorage.getItem("token");
-      if(token) {
-        if (JSON.parse(window.localStorage.getItem("cart")).length) {
-          let storageCart = JSON.parse(window.localStorage.getItem("cart"));
-            storageCart.forEach(async (cartItem) => {
-              const { data } = await axios.post("/api/cart/", cartItem, {
-                headers: {
-                  authorization: token,
-                },
-              });
-              console.log(data)
-            });
-        }
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-}
 export const setCartThunk = () => {
   return async (dispatch) => {
     try {
@@ -42,8 +20,8 @@ export const setCartThunk = () => {
       if (token) {
         if (JSON.parse(window.localStorage.getItem("cart")).length) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
-          for (let i = 0 ; i< storageCart.length; i++) {
-             await axios.post("/api/cart/", storageCart[i], {
+          for (let i = 0; i < storageCart.length; i++) {
+            await axios.post("/api/cart/", storageCart[i], {
               headers: {
                 authorization: token,
               },
@@ -55,7 +33,7 @@ export const setCartThunk = () => {
             authorization: token,
           },
         });
-        console.log(data)
+        console.log(data);
         dispatch(setCart(data));
         window.localStorage.setItem("cart", JSON.stringify([]));
       } else {
@@ -83,7 +61,7 @@ export const deleteFromCartThunk = (productInfo) => {
           },
           data: { id: productInfo.id },
         });
-        console.log('loggedid', data)
+        console.log("loggedid", data);
         dispatch(deleteFromCart(data));
       } else {
         let currentCart = JSON.parse(window.localStorage.getItem("cart"));
@@ -91,7 +69,7 @@ export const deleteFromCartThunk = (productInfo) => {
           (element) => element.id !== productInfo.id
         );
         window.localStorage.setItem("cart", JSON.stringify(currentCart));
-        console.log('loggedout', productInfo)
+        console.log("loggedout", productInfo);
         dispatch(deleteFromCart(productInfo));
       }
     } catch (error) {
@@ -114,17 +92,17 @@ export const addToCartThunk = (productInfo) => {
       } else {
         let localCart = JSON.parse(window.localStorage.getItem("cart"));
         let newCart;
-        let cartItem
+        let cartItem;
         if (localCart.some((item) => item.product.id === productInfo.id)) {
           newCart = localCart.map((item) => {
             if (item.product.id === productInfo.id) {
               item.quantity = item.quantity + 1;
-              cartItem = item
+              cartItem = item;
             }
             return item;
           });
         } else {
-           cartItem = {
+          cartItem = {
             quantity: 1,
             product: productInfo,
             id: productInfo.id,
@@ -159,12 +137,12 @@ export const updateCartThunk = (productInfo) => {
         //unfinished
         console.log("hi");
         let currentCart = JSON.parse(window.localStorage.getItem("cart"));
-        let newCart = currentCart.map(item => {
+        let newCart = currentCart.map((item) => {
           if (item.id === productInfo.id) {
-            item.quantity = productInfo.quantity
-          } 
-          return item
-        })
+            item.quantity = productInfo.quantity;
+          }
+          return item;
+        });
         currentCart.push(productInfo);
         window.localStorage.setItem("cart", JSON.stringify(currentCart));
         dispatch(updateCart(productInfo));
@@ -181,15 +159,15 @@ export default function cartReducer(state = initialState, action) {
     case SET_CART:
       return action.cart;
     case ADD_CART:
-        if(state.some(item => item.product.id === action.product.product.id)){
-          return state.map(item => {
-            if (item.product.id === action.product.product.id) {
-              item.quantity = item.quantity + 1
-            }
-            return item
-          }) 
-      }else {
-        return [...state, action.product]
+      if (state.some((item) => item.product.id === action.product.product.id)) {
+        return state.map((item) => {
+          if (item.product.id === action.product.product.id) {
+            item.quantity = item.quantity + 1;
+          }
+          return item;
+        });
+      } else {
+        return [...state, action.product];
       }
     case DELETE_ITEM:
       return state.filter((item) => item.id !== action.product.id);

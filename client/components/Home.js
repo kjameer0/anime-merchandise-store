@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SelectQuantity from './SelectQuantity';
-import { setCartThunk, moveFromLocalToCart } from '../store/cart';
+import { setCartThunk } from '../store/cart';
 /**
  * COMPONENT
  *
@@ -30,7 +30,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     setCart: () => dispatch(setCartThunk()),
-    moveToCart: () => dispatch(moveFromLocalToCart())
   }
 }
 export default connect(mapState, mapDispatch)(Home);
