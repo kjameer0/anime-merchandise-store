@@ -53,8 +53,10 @@ export class Checkout extends Component {
   }
   onApprove(data, actions) {
     return actions.order.capture().then((details) => {
+      console.log(this.props);
       console.log(details);
-      alert(`Transaction completed by ${name}`);
+      console.log(data);
+      this.props.checkout(details.id);
     });
   }
   render() {
@@ -70,7 +72,7 @@ export class Checkout extends Component {
             <PayPalButtons
               style={{ layout: 'vertical' }}
               createOrder={this.createOrder}
-              onApprove={this.onApprove}
+              onApprove={(data, actions) => this.onApprove(data, actions)}
             />
           </PayPalScriptProvider>
         </div>
@@ -100,7 +102,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchCart: () => dispatch(setCartThunk()),
     clearCart: () => dispatch(clearCart()),
-    checkout: () => dispatch(orderCheckoutThunk()),
+    checkout: (confirmationId) => dispatch(orderCheckoutThunk(confirmationId)),
   };
 };
 

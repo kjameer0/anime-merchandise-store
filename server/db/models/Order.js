@@ -12,7 +12,7 @@ const Order = db.define('order', {
   },
 });
 
-Order.checkout = async function (userId, confirmationId) {
+Order.checkout = async function (userId, confirmation) {
   const orderInfo = await CartItem.getCart(userId);
   if (!orderInfo.length) throw 'cart is empty?!';
 
@@ -22,12 +22,15 @@ Order.checkout = async function (userId, confirmationId) {
   );
   console.log(typeof totalPrice);
   console.log(totalPrice);
-  const order = await Order.create({ confirmationId, userId, totalPrice });
+  const order = await Order.create({ confirmation, userId, totalPrice });
 
   orderInfo.forEach((element) => {
     element.setOrder(order);
   });
 
-  return { order, orderInfo };
+  return {
+    order: { confirmation: order.confirmation, totalPrice: order.totalPrice },
+    orderInfo,
+  };
 };
 module.exports = Order;
