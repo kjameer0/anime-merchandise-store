@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-
-import { AppBar, Toolbar, Button } from "@material-ui/core";
+import { AppBar, Toolbar, Button, IconButton } from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 const useStyles = theme => ({
   root: {
@@ -24,6 +24,7 @@ const useStyles = theme => ({
     display: "inline-block",
     marginLeft: "3rem",
     marginBottom: "1.5rem",
+    fontSize: "1rem",
   },
 });
 
@@ -39,21 +40,15 @@ class Navbar extends Component {
               <h5>Video Game Weapon</h5>
             </div>
             <div className={classes.navbarNav}>
+              <Button color="inherit" component={Link} to="/products">
+                Products
+              </Button>
+              <IconButton color="inherit" component={Link} to="/cart">
+                {cart.length > 0 && <span className={classes.cartInfo}>{cart.length}</span>}
+                <ShoppingCartIcon />
+              </IconButton>
               {!isLoggedIn && (
-                <div className="navbar-nav">
-                  <Button color="inherit" component={Link} to="/products">
-                    Products
-                  </Button>
-
-                  <Button color="inherit" component={Link} to="/cart">
-                    {cart.length > 0 ? (
-                      <span className={classes.cartInfo}>{cart.length}</span>
-                    ) : (
-                      <span style={{ display: "hidden" }}></span>
-                    )}
-                    My Cart
-                  </Button>
-
+                <>
                   <Button color="inherit" component={Link} to="/login">
                     Login
                   </Button>
@@ -61,28 +56,17 @@ class Navbar extends Component {
                   <Button color="inherit" to="/signup" component={Link}>
                     Sign up
                   </Button>
-                </div>
+                </>
               )}
               {isLoggedIn && (
-                <div className="navbar-nav">
+                <>
                   <Button color="inherit" component={Link} to="/home">
                     Home
-                  </Button>
-                  <Button color="inherit" component={Link} to="/products">
-                    Products
-                  </Button>
-                  <Button color="inherit" component={Link} to="/cart">
-                    {cart.length > 0 ? (
-                      <span className={classes.cartInfo}>{cart.length}</span>
-                    ) : (
-                      <span style={{ display: "hidden" }}></span>
-                    )}
-                    My Cart
                   </Button>
                   <Button color="inherit" onClick={handleClick}>
                     Logout
                   </Button>
-                </div>
+                </>
               )}
             </div>
           </Toolbar>
