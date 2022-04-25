@@ -18,20 +18,37 @@ export const setCartThunk = () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
-        window.localStorage.removeItem("cart");
+        if (window.localStorage.getItem("cart")) {
+          let storageCart = JSON.parse(window.localStorage.getItem("cart"));
+          if (storageCart.length) {
+            storageCart.forEach(async (cartItem) => {
+              console.log(cartItem);
+              const { data } = await axios.post("/api/cart/", cartItem, {
+                headers: {
+                  authorization: token,
+                },
+              });
+              console.log(data)
+            });
+          }
+        }
         const { data } = await axios.get("/api/cart", {
           headers: {
             authorization: token,
           },
         });
-        console.log(Date.parse(data[1].createdAt))
-        console.log(Date.parse(data[0].createdAt))
+        console.log('you failure',data)
+        dispatch(setCart(data));
+        window.localStorage.removeItem("cart");
 
-        dispatch(setCart(data.sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt))));
       } else {
         if (window.localStorage.getItem("cart")) {
-          dispatch(setCart(window.localStorage.getItem("cart")));
+          // window.localStorage.clear()
+          console.log("hi local storage set thunk");
+          console.log(JSON.parse(window.localStorage.getItem("cart")));
+          dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
         } else {
+          window.localStorage.setItem("cart", JSON.stringify([]));
           dispatch(setCart([]));
         }
       }
@@ -50,7 +67,7 @@ export const deleteFromCartThunk = (productInfo) => {
           headers: {
             authorization: token,
           },
-          data: {id:productInfo},
+          data: { id: productInfo },
         });
         dispatch(deleteFromCart(data));
       } else {
@@ -77,12 +94,35 @@ export const addToCartThunk = (productInfo) => {
             authorization: token,
           },
         });
+        console.log(data);
         // dispatch(addToCart(data));
       } else {
-        let currentCart = window.localStorage.getItem("cart") || [];
-        currentCart.push(productInfo);
-        window.localStorage.setItem("cart", currentCart);
-        dispatch(addToCart(productInfo));
+        console.log(productInfo);
+        let localCart = JSON.parse(window.localStorage.getItem("cart"));
+        console.log(localCart);
+        let newCart;
+        if (localCart.some((item) => item.product.id === productInfo.id)) {
+          newCart = localCart.map((item) => {
+            if (item.product.id === productInfo.id) {
+              item.quantity = item.quantity + 1;
+            }
+            return item;
+          });
+        } else {
+          let cartItem = {
+            quantity: 1,
+            product: productInfo,
+            id: productInfo.id,
+          };
+          localCart.push(cartItem);
+          console.log("hi", localCart);
+          newCart = localCart;
+        }
+        localCart = window.localStorage.setItem(
+          "cart",
+          JSON.stringify(newCart)
+        );
+        //dispatch(addToCart(newCart));
       }
     } catch (error) {
       console.log(error);
@@ -103,6 +143,7 @@ export const updateCartThunk = (productInfo) => {
         dispatch(updateCart(data));
       } else {
         //unfinished
+        console.log("hi");
         let currentCart = window.localStorage.getItem("cart");
         currentCart.push(productInfo);
         window.localStorage.setItem("cart", currentCart);
@@ -119,14 +160,14 @@ export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cart;
-    // case ADD_CART:
-    //   return [...state, action.product];
+    case ADD_CART:
+      return [...state, action.product];
     case DELETE_ITEM:
       return state.filter((item) => item.id !== action.product.id);
     case UPDATE_CART:
-      return state.map(item => {
-        if (item.id === action.newCart.id) return action.newCart
-        return item  
+      return state.map((item) => {
+        if (item.id === action.newCart.id) return action.newCart;
+        return item;
       });
     case CLEAR_CART:
       return [];

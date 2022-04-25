@@ -26,6 +26,9 @@ export class Cart extends Component {
   //     });
   //   }
   // }
+  // componentDidUpdate(prev) {
+    
+  // }
   componentWillUnmount() {
     this.props.clearCart();
   }
@@ -48,7 +51,7 @@ export class Cart extends Component {
       <form id="form-cart" onSubmit={this.handleCheckout}>
         <div className="all-cart">
           {userCart.map((cart, index) => (
-            <SingleCartItem key={cart.id} cart={cart} index={index} />
+            <SingleCartItem key={cart.product.id} cart={cart} index={index} />
           ))}
         </div>
 
