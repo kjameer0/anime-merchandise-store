@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-  models: { User, Product, CartItem },
+  models: { User, Product, CartItem, Order },
 } = require("../db");
 const { requireToken } = require("./utils");
 
@@ -9,10 +9,10 @@ router.get("/", requireToken, async (req, res, next) => {
     //get a list of the whole cart
     const userId = req.user.id;
     const cart = await CartItem.findAll({
-      where: { userId: userId },
+      where: { userId: userId, orderId: null },
       include: [Product],
     });
-    res.send(cart);
+    res.send(cart.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)));
   } catch (error) {
     next(error);
   }
@@ -32,17 +32,23 @@ router.put("/", requireToken, async (req, res, next) => {
 // POST /api/cart
 router.post("/", requireToken, async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    req.body.userId = userId;
-    let createdItem = await CartItem.create(req.body);
-    const item = await CartItem.findOne({
-      where: {
-        id: createdItem.id,
-      },
-      include: [{ model: User }, { model: Product }],
+    const userId = req.user;
+    const [item, created] = await CartItem.findOrCreate({
+      where: { productId: req.body.id, orderId: null },
     });
-    console.log(item);
-    res.status(201).send(item);
+    if (created && req.body.quantity) {
+      await item.update({ quantity: req.body.quantity });
+    }
+    if (!created) await item.update({ quantity: item.quantity + req.body.quantity || item.quantity + 1 });
+    await item.setUser(userId);
+    let updatedItem = await CartItem.findOne({
+      where: {
+        id: item.id,
+      },
+      include: [Product],
+    });
+
+    res.status(201).send(updatedItem);
   } catch (error) {
     next(error);
   }

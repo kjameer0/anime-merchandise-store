@@ -33,6 +33,7 @@ class SingleCartItem extends Component {
 
   render() {
     const cart = this.props.cart || {};
+    
     return (
       <div className="cart" key={cart.id}>
         <div className="cart-data">
@@ -49,7 +50,7 @@ class SingleCartItem extends Component {
         <div className="cart-delete">
           <button
             type="button"
-            onClick={() => this.props.deleteFromCartProps(cart.id)}
+            onClick={() => this.props.deleteFromCartProps(cart)}
           >
             remove from cart
           </button>
@@ -59,6 +60,12 @@ class SingleCartItem extends Component {
   }
 }
 
+const mapState =(state) => {
+  return {
+    cartFromStore: state.cart
+  }
+}
+//export default connect(mapState)(SelectQuantity)
 const mapDispatch = (dispatch) => {
   return {
     deleteFromCartProps: (id) => dispatch(deleteFromCartThunk(id)),
@@ -66,4 +73,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatch)(SingleCartItem);
+export default connect(mapState, mapDispatch)(SingleCartItem);

@@ -4,7 +4,7 @@ import { setCartThunk } from "../store/cart";
 import SelectQuantity from "./SelectQuantity";
 import { clearCart } from "../store/cart";
 import SingleCartItem from "./SingleCartItem";
-
+import { orderCheckoutThunk } from "../store/singleOrder";
 export class Cart extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +26,9 @@ export class Cart extends Component {
   //     });
   //   }
   // }
+  // componentDidUpdate(prev) {
+
+  // }
   componentWillUnmount() {
     this.props.clearCart();
   }
@@ -35,9 +38,11 @@ export class Cart extends Component {
 
   handleCheckout(event) {
     event.preventDefault();
+    this.props.clearCart();
+    this.props.checkout();
   }
   render() {
-    const userCart = this.props.cart;
+    const userCart = this.props.cart || [];
     if (!userCart.length)
       return (
         <div id="empty-cart">
@@ -48,7 +53,7 @@ export class Cart extends Component {
       <form id="form-cart" onSubmit={this.handleCheckout}>
         <div className="all-cart">
           {userCart.map((cart, index) => (
-            <SingleCartItem key={cart.id} cart={cart} index={index} />
+            <SingleCartItem key={index} cart={cart} index={index} />
           ))}
         </div>
 
@@ -79,6 +84,7 @@ const mapDispatch = dispatch => {
   return {
     fetchCart: () => dispatch(setCartThunk()),
     clearCart: () => dispatch(clearCart()),
+    checkout: () => dispatch(orderCheckoutThunk()),
   };
 };
 

@@ -4,17 +4,20 @@ import history from "../history";
 const SET_PRODUCTS = "SET_PRODUCTS";
 const ADD_PRODUCT = "ADD_PRODUCT";
 const CLEAR_PRODUCTS = "CLEAR_PRODUCTS";
-const setProducts = (products) => ({ type: SET_PRODUCTS, products });
-const addProduct = (product) => ({ type: ADD_PRODUCT, product });
+const setProducts = products => ({ type: SET_PRODUCTS, products });
+const addProduct = product => ({ type: ADD_PRODUCT, product });
 export const clearProducts = () => ({ type: CLEAR_PRODUCTS, products: [] });
 
-export const setProductsThunk = () => {
-  return async (dispatch) => {
+export const setProductsThunk = (pageNumber = 1) => {
+  return async dispatch => {
     try {
       const token = window.localStorage.getItem("token");
       const { data } = await axios.get("/api/products", {
         headers: {
           authorization: token,
+        },
+        params: {
+          page: pageNumber,
         },
       });
       dispatch(setProducts(data));
@@ -24,9 +27,9 @@ export const setProductsThunk = () => {
   };
 };
 
-export const addProductThunk = (productInfo) => {
+export const addProductThunk = productInfo => {
   //only possible for admins
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const token = window.localStorage.getItem("token");
       const { data } = await axios.post("/api/products", productInfo, {
