@@ -3,12 +3,17 @@ const Sequelize = require('sequelize');
 const CartItem = require('./CartItem');
 
 const Order = db.define('order', {
+  confirmationId: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    primaryKey: true,
+  },
   totalPrice: {
     type: Sequelize.BIGINT,
   },
 });
 
-Order.checkout = async function (userId) {
+Order.checkout = async function (userId, confirmationId) {
   const orderInfo = await CartItem.getCart(userId);
   if (!orderInfo.length) throw 'cart is empty?!';
 
@@ -18,7 +23,7 @@ Order.checkout = async function (userId) {
   );
   console.log(typeof totalPrice);
   console.log(totalPrice);
-  const order = await Order.create({ userId, totalPrice: totalPrice });
+  const order = await Order.create({ confirmationId, userId, totalPrice });
 
   orderInfo.forEach((element) => {
     element.setOrder(order);
