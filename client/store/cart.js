@@ -18,7 +18,7 @@ export const setCartThunk = () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
-        if (window.localStorage.getItem("cart")) {
+        if (JSON.parse(window.localStorage.getItem("cart")).length) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
           if (storageCart.length) {
             storageCart.forEach(async (cartItem, index) => {
@@ -36,10 +36,9 @@ export const setCartThunk = () => {
           },
         });
         dispatch(setCart(data));
-        window.localStorage.removeItem("cart");
-
+        window.localStorage.setItem("cart", JSON.stringify([]));
       } else {
-        if (window.localStorage.getItem("cart")) {
+        if (JSON.parse(window.localStorage.getItem("cart")).length) {
           dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
         } else {
           window.localStorage.setItem("cart", JSON.stringify([]));
@@ -61,15 +60,17 @@ export const deleteFromCartThunk = (productInfo) => {
           headers: {
             authorization: token,
           },
-          data: { id: productInfo },
+          data: { id: productInfo.id },
         });
+        console.log('loggedid', data)
         dispatch(deleteFromCart(data));
       } else {
         let currentCart = JSON.parse(window.localStorage.getItem("cart"));
         currentCart = currentCart.filter(
           (element) => element.id !== productInfo.id
         );
-        window.localStorage.setItem("cart", currentCart);
+        window.localStorage.setItem("cart", JSON.stringify(currentCart));
+        console.log('loggedout', productInfo)
         dispatch(deleteFromCart(productInfo));
       }
     } catch (error) {
@@ -134,9 +135,9 @@ export const updateCartThunk = (productInfo) => {
       } else {
         //unfinished
         console.log("hi");
-        let currentCart = window.localStorage.getItem("cart");
+        let currentCart = JSON.parse(window.localStorage.getItem("cart"));
         currentCart.push(productInfo);
-        window.localStorage.setItem("cart", currentCart);
+        window.localStorage.setItem("cart", JSON.stringify(currentCart));
         dispatch(updateCart(productInfo));
       }
     } catch (error) {

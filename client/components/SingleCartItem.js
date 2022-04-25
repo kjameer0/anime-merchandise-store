@@ -49,7 +49,7 @@ class SingleCartItem extends Component {
         <div className="cart-delete">
           <button
             type="button"
-            onClick={() => this.props.deleteFromCartProps(cart.id)}
+            onClick={() => this.props.deleteFromCartProps(cart)}
           >
             remove from cart
           </button>
