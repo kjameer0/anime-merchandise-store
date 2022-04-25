@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-
+import {connect} from 'react-redux'
 const DELETE = 'DELETE';
 const MORE_OPTIONS = 'MORE';
 
-export default class SelectQuantity extends Component {
+class SelectQuantity extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasOption: true };
+    this.state = { hasOption: true,  };
     this.handleChange = this.handleChange.bind(this);
   }
+  
+    
+  
   handleChange(event) {
     switch (event.target.value) {
       case DELETE:
@@ -19,21 +22,23 @@ export default class SelectQuantity extends Component {
         break;
       default:
         this.props.onChange(event);
+        this.setState({quantity: this.props.quantity})
         break;
     }
   }
   render() {
     const quantityList = Array.from({ length: 9 }, (_, i) => i + 1);
     const { quantity, onDelete } = this.props;
+    console.log(quantity)
     return this.state.hasOption ? (
       <select
-        defaultValue={quantity ? quantity : 1}
+        defaultValue={quantity ? (quantity>= 10 ? MORE_OPTIONS: quantity) : 1}
         onChange={this.handleChange}
       >
         {onDelete !== undefined ? (
           <option value={DELETE}>0 (delete)</option>
         ) : (
-          <></>
+          <React.Fragment></React.Fragment>
         )}
         {quantityList.map((number) => (
           <option value={number} key={number}>
@@ -53,3 +58,9 @@ export default class SelectQuantity extends Component {
     );
   }
 }
+const mapState =(state) => {
+  return {
+    cart: state.cart
+  }
+}
+export default connect(mapState)(SelectQuantity)

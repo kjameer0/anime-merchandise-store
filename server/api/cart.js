@@ -33,7 +33,6 @@ router.put("/", requireToken, async (req, res, next) => {
 router.post("/", requireToken, async (req, res, next) => {
   try {
     const userId = req.user;
-    console.log(req.body);
     const [item, created] = await CartItem.findOrCreate({
       where: { productId: req.body.id, orderId: null },
     });

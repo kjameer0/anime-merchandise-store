@@ -31,24 +31,21 @@ export const setCartThunk = () => {
               console.log(data);
             });
           }
-        }
-        const { data } = await axios.get("/api/cart", {
-          headers: {
-            authorization: token,
-          },
-        });
-        console.log("you failure", data);
-        dispatch(setCart(data));
-        window.localStorage.removeItem("cart");
-      } else {
-        if (window.localStorage.getItem("cart")) {
-          // window.localStorage.clear()
-          console.log("hi local storage set thunk");
-          console.log(JSON.parse(window.localStorage.getItem("cart")));
-          dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
+          const { data } = await axios.get("/api/cart", {
+            headers: {
+              authorization: token,
+            },
+          });
+          console.log("you failure", data);
+          dispatch(setCart(data));
+          window.localStorage.removeItem("cart");
         } else {
-          window.localStorage.setItem("cart", JSON.stringify([]));
-          dispatch(setCart([]));
+          if (JSON.parse(window.localStorage.getItem("cart")).length) {
+            dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
+          } else {
+            window.localStorage.setItem("cart", JSON.stringify([]));
+            dispatch(setCart([]));
+          }
         }
       }
     } catch (error) {
@@ -66,8 +63,9 @@ export const deleteFromCartThunk = productInfo => {
           headers: {
             authorization: token,
           },
-          data: { id: productInfo },
+          data: { id: productInfo.id },
         });
+        console.log("loggedid", data);
         dispatch(deleteFromCart(data));
       } else {
         let currentCart = window.localStorage.getItem("cart");
@@ -94,9 +92,7 @@ export const addToCartThunk = productInfo => {
         console.log(data);
         dispatch(addToCart(data));
       } else {
-        console.log(productInfo);
         let localCart = JSON.parse(window.localStorage.getItem("cart"));
-        console.log(localCart);
         let newCart;
         if (localCart.some(item => item.product.id === productInfo.id)) {
           newCart = localCart.map(item => {
@@ -112,7 +108,6 @@ export const addToCartThunk = productInfo => {
             id: productInfo.id,
           };
           localCart.push(cartItem);
-          console.log("hi", localCart);
           newCart = localCart;
         }
         localCart = window.localStorage.setItem("cart", JSON.stringify(newCart));
@@ -139,7 +134,7 @@ export const updateCartThunk = productInfo => {
         //unfinished
         let currentCart = window.localStorage.getItem("cart");
         currentCart.push(productInfo);
-        window.localStorage.setItem("cart", currentCart);
+        window.localStorage.setItem("cart", JSON.stringify(currentCart));
         dispatch(updateCart(productInfo));
       }
     } catch (error) {
