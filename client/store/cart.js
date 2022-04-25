@@ -18,27 +18,27 @@ export const setCartThunk = () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
-        if (window.localStorage.getItem("cart")) {
+        if (JSON.parse(window.localStorage.getItem("cart")).length) {
           let storageCart = JSON.parse(window.localStorage.getItem("cart"));
-          if (storageCart.length) {
-            storageCart.forEach(async cartItem => {
-              console.log(cartItem);
-              const { data } = await axios.post("/api/cart/", cartItem, {
-                headers: {
-                  authorization: token,
-                },
-              });
-              console.log(data);
+          for (let i = 0; i < storageCart.length; i++) {
+            await axios.post("/api/cart/", storageCart[i], {
+              headers: {
+                authorization: token,
+              },
             });
           }
-          const { data } = await axios.get("/api/cart", {
-            headers: {
-              authorization: token,
-            },
-          });
-          console.log("you failure", data);
-          dispatch(setCart(data));
-          window.localStorage.removeItem("cart");
+        }
+        const { data } = await axios.get("/api/cart", {
+          headers: {
+            authorization: token,
+          },
+        });
+        console.log(data);
+        dispatch(setCart(data));
+        window.localStorage.setItem("cart", JSON.stringify([]));
+      } else {
+        if (JSON.parse(window.localStorage.getItem("cart")).length) {
+          dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
         } else {
           if (JSON.parse(window.localStorage.getItem("cart")).length) {
             dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
@@ -68,9 +68,12 @@ export const deleteFromCartThunk = productInfo => {
         console.log("loggedid", data);
         dispatch(deleteFromCart(data));
       } else {
-        let currentCart = window.localStorage.getItem("cart");
-        currentCart = currentCart.filter(element => element.id !== productInfo.id);
-        window.localStorage.setItem("cart", currentCart);
+        let currentCart = JSON.parse(window.localStorage.getItem("cart"));
+        currentCart = currentCart.filter(
+          (element) => element.id !== productInfo.id
+        );
+        window.localStorage.setItem("cart", JSON.stringify(currentCart));
+        console.log("loggedout", productInfo);
         dispatch(deleteFromCart(productInfo));
       }
     } catch (error) {
@@ -89,20 +92,21 @@ export const addToCartThunk = productInfo => {
             authorization: token,
           },
         });
-        console.log(data);
         dispatch(addToCart(data));
       } else {
         let localCart = JSON.parse(window.localStorage.getItem("cart"));
         let newCart;
-        if (localCart.some(item => item.product.id === productInfo.id)) {
-          newCart = localCart.map(item => {
+        let cartItem;
+        if (localCart.some((item) => item.product.id === productInfo.id)) {
+          newCart = localCart.map((item) => {
             if (item.product.id === productInfo.id) {
               item.quantity = item.quantity + 1;
+              cartItem = item;
             }
             return item;
           });
         } else {
-          let cartItem = {
+          cartItem = {
             quantity: 1,
             product: productInfo,
             id: productInfo.id,
@@ -110,8 +114,11 @@ export const addToCartThunk = productInfo => {
           localCart.push(cartItem);
           newCart = localCart;
         }
-        localCart = window.localStorage.setItem("cart", JSON.stringify(newCart));
-        dispatch(addToCart(newCart));
+        localCart = window.localStorage.setItem(
+          "cart",
+          JSON.stringify(newCart)
+        );
+        dispatch(addToCart(cartItem));
       }
     } catch (error) {
       console.log(error);
@@ -131,8 +138,13 @@ export const updateCartThunk = productInfo => {
         });
         dispatch(updateCart(data));
       } else {
-        //unfinished
-        let currentCart = window.localStorage.getItem("cart");
+        let currentCart = JSON.parse(window.localStorage.getItem("cart"));
+        let newCart = currentCart.map((item) => {
+          if (item.id === productInfo.id) {
+            item.quantity = productInfo.quantity;
+          }
+          return item;
+        });
         currentCart.push(productInfo);
         window.localStorage.setItem("cart", JSON.stringify(currentCart));
         dispatch(updateCart(productInfo));
@@ -149,13 +161,16 @@ export default function cartReducer(state = initialState, action) {
     case SET_CART:
       return action.cart;
     case ADD_CART:
-      for (let i = 0; i < state.length; i++) {
-        if (state[i].id === action.product.id) {
-          state[i].quantity += action.product.quantity;
-          return state;
-        }
+      if (state.some((item) => item.product.id === action.product.product.id)) {
+        return state.map((item) => {
+          if (item.product.id === action.product.product.id) {
+            item.quantity = item.quantity + 1;
+          }
+          return item;
+        });
+      } else {
+        return [...state, action.product];
       }
-      return [...state, action.product];
     case DELETE_ITEM:
       return state.filter(item => item.id !== action.product.id);
     case UPDATE_CART:

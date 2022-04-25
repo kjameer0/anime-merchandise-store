@@ -13,10 +13,9 @@ import { Link } from "react-router-dom";
 function handleChange(e) {
   console.log();
 }
-export const Home = (props) => {
-
+export const Home =  (props) => {
   const { username, password, email, firstName, lastName, address } = props;
-
+  props.setCart()
   return (
     <div>
       <h3>Welcome, {firstName}</h3>
@@ -114,7 +113,7 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch) => {
   return {
-    setCart: () => dispatch(setCartThunk())
+    setCart: () => dispatch(setCartThunk()),
   }
 }
 export default connect(mapState, mapDispatch)(Home);

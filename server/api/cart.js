@@ -12,7 +12,9 @@ router.get("/", requireToken, async (req, res, next) => {
       where: { userId: userId, orderId: null },
       include: [Product],
     });
-    res.send(cart.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)));
+    res.send(
+      cart.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+    );
   } catch (error) {
     next(error);
   }
@@ -39,16 +41,18 @@ router.post("/", requireToken, async (req, res, next) => {
     if (created && req.body.quantity) {
       await item.update({ quantity: req.body.quantity });
     }
-    if (!created) await item.update({ quantity: item.quantity + req.body.quantity || item.quantity + 1 });
+    if (!created)
+      await item.update({
+        quantity: item.quantity + req.body.quantity || item.quantity + 1,
+      });
     await item.setUser(userId);
-    let updatedItem = await CartItem.findOne({
+    const resItem = await CartItem.findOne({
       where: {
         id: item.id,
       },
       include: [Product],
     });
-
-    res.status(201).send(updatedItem);
+    res.status(201).send(resItem);
   } catch (error) {
     next(error);
   }

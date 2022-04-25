@@ -43,6 +43,7 @@ export class Cart extends Component {
   }
   render() {
     const userCart = this.props.cart || [];
+    console.log(userCart)
     if (!userCart.length)
       return (
         <div id="empty-cart">
