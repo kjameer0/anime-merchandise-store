@@ -17,7 +17,7 @@ export class Products extends Component {
     this.handlePreviousPage = this.handlePreviousPage.bind(this);
   }
   componentDidMount() {
-    setTimeout(() => this.props.fetchProducts(), 2000);
+    this.props.fetchProducts()
   }
   componentDidUpdate(prev) {
     if (!prev.products && this.props.products) {
