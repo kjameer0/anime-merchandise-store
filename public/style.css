@@ -40,7 +40,7 @@ nav a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: 800vh;
 }
 
 .form-title {
@@ -81,7 +81,6 @@ nav a:hover {
 .all-cart {
   display: flex;
   flex-direction: column;
-  align-items: center;
   max-width: 1440px;
   margin-left: auto;
   margin-right: auto;
@@ -118,7 +117,7 @@ nav a:hover {
 }
 
 .cart img {
-  max-width: 10%;
+  max-width: 100px;
   height: auto;
   margin-left: 5px;
   margin-right: 5px;
@@ -142,14 +141,23 @@ nav a:hover {
   color: white;
 }
 
+.checkout{
+  display: flex;
+}
+#checkout-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width:100%;
+  height: auto;
+}
 #subtotal {
   text-align: right;
 }
-.add-to-btn {
-}
-.add-to-btn:hover {
-}
-.add-to-btn:visited {
+.center-col {
+  flex: 1;
+  background: #aaa;
+  overflow-y: scroll;
 }
 
 .product-detail img {
