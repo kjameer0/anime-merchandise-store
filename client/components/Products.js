@@ -17,10 +17,6 @@ export class Products extends Component {
   }
   componentDidMount() {
     this.props.fetchProducts();
-    const local = JSON.parse(window.localStorage.getItem("cart"));
-    if (!local) {
-      window.localStorage.setItem("cart", JSON.stringify([]));
-    }
   }
 
   handleNextPage() {

@@ -38,15 +38,11 @@ router.get('/:id', requireToken, async (req, res, next) => {
 //POST Route
 router.post('/', requireToken, async (req, res, next) => {
   try {
-    // array of cart items
     let { items, price } = req.body;
-    // order.items, // order.price
-
     const order = await Order.create({
       totalPrice: price,
       userId: req.user.id,
     });
-
     await order.addCarts(items);
     await order.save();
     console.log(await order.getCarts());
@@ -59,7 +55,8 @@ router.post('/', requireToken, async (req, res, next) => {
 router.post('/checkout', requireToken, async (req, res, next) => {
   try {
     const userId = req.user.id;
-    res.status(201).send(await Order.checkout(userId));
+    const { confirmationId } = req.body;
+    res.status(201).send(await Order.checkout(userId, confirmationId));
   } catch (error) {
     next(error);
   }

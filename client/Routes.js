@@ -10,6 +10,9 @@ import Products from "./components/Products";
 import Cart from "./components/Cart";
 import Profile from "./components/Profile";
 
+import Checkout from './components/Checkout';
+import Confirmation from './components/Confirmation';
+
 /**
  * COMPONENT
  */
@@ -32,6 +35,8 @@ class Routes extends Component {
             <Route path="/cart" exact component={Cart} />
             <Route path="/profile" exact component={Profile} />
             <Route path="/orders" component={Orders} />
+            <Route path="/checkout" exact component={Checkout} />
+            <Route path="/confirmation" exact component={Confirmation} />
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -41,6 +46,7 @@ class Routes extends Component {
             <Route path="/cart" exact component={Cart} />
             <Route path="/products" exact component={Products} />
             <Route path="/products/:id" exact component={ProductDetail} />
+            <Route path="/checkout" exact component={Checkout} />
           </Switch>
         )}
       </div>
