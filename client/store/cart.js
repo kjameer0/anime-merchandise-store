@@ -37,15 +37,11 @@ export const setCartThunk = () => {
         dispatch(setCart(data));
         window.localStorage.setItem("cart", JSON.stringify([]));
       } else {
-        if (cart && JSON.parse(window.localStorage.getItem("cart")).length) {
-          dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
+        if (cart && JSON.parse(window.localStorage.getItem('cart')).length) {
+          dispatch(setCart(JSON.parse(window.localStorage.getItem('cart'))));
         } else {
-          if (JSON.parse(window.localStorage.getItem("cart")).length) {
-            dispatch(setCart(JSON.parse(window.localStorage.getItem("cart"))));
-          } else {
-            window.localStorage.setItem("cart", JSON.stringify([]));
-            dispatch(setCart([]));
-          }
+          window.localStorage.setItem('cart', JSON.stringify([]));
+          dispatch(setCart([]));
         }
       }
     } catch (error) {
@@ -91,11 +87,17 @@ export const addToCartThunk = productInfo => {
         });
         dispatch(addToCart(data));
       } else {
-        let localCart = JSON.parse(window.localStorage.getItem("cart"));
+        if (!cart) {
+          dispatch(setCart([]));
+        }
+        let localCart = JSON.parse(window.localStorage.getItem('cart'));
         let newCart;
         let cartItem;
-        if (cart && localCart.some(item => item.product.id === productInfo.id)) {
-          newCart = localCart.map(item => {
+        if (
+          cart &&
+          localCart.some((item) => item.product.id === productInfo.id)
+        ) {
+          newCart = localCart.map((item) => {
             if (item.product.id === productInfo.id) {
               item.quantity = item.quantity + 1;
               cartItem = item;

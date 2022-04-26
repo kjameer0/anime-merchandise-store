@@ -16,21 +16,18 @@ const checkoutOrder = payload => ({
 export const orderCheckoutThunk = (confirmationId, history) => {
   return async dispatch => {
     try {
-      const token = window.localStorage.getItem("token") || "";
-      if (token) {
-        const { data } = await axios.post(
-          "/api/orders/checkout",
-          { confirmationId },
-          {
-            headers: {
-              authorization: token,
-            },
-          }
-        );
-        dispatch(checkoutOrder(data));
-      } else {
-        //TODO: local storage
-      }
+      const token = window.localStorage.getItem('token');
+      if (!token) return;
+      const { data } = await axios.post(
+        '/api/orders/checkout',
+        { confirmationId },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      dispatch(checkoutOrder(data));
     } catch (error) {
       console.log(error);
     } finally {

@@ -5,6 +5,7 @@ import SelectQuantity from "./SelectQuantity";
 import { clearCart, deleteFromCartThunk, updateCartThunk } from "../store/cart";
 import { Typography, Button, Card } from "@material-ui/core";
 
+
 class SingleCartItem extends Component {
   constructor(props) {
     super(props);

@@ -11,6 +11,10 @@ import { Button } from "@material-ui/core";
 export class Cart extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true,
+      noCart: false,
+    };
     this.handleCheckout = this.handleCheckout.bind(this);
   }
 
@@ -23,7 +27,7 @@ export class Cart extends Component {
 
   handleCheckout(event) {
     event.preventDefault();
-    this.props.history.push("checkout");
+    this.props.history.push('/checkout');
   }
   render() {
     const userCart = this.props.cart || [];

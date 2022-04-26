@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import SelectQuantity from './SelectQuantity';
-import { setCartThunk } from '../store/cart';
+import React from "react";
+import { connect } from "react-redux";
+import SelectQuantity from "./SelectQuantity";
+import { setCartThunk } from "../store/cart";
 
-import { Link } from 'react-router-dom';
-import { updateAuthThunk } from '../store/auth';
+import { Link } from "react-router-dom";
+import { updateAuthThunk } from "../store/auth";
 /**
  * COMPONENT
  *
