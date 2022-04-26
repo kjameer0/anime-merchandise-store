@@ -1,6 +1,12 @@
 import axios from 'axios';
 
 const CHECKOUT_ORDER = 'CHECKOUT_ORDER';
+const CLEAR_ORDER = 'CLEAR_ORDER';
+
+export const clearOrder = () => ({
+  type: CLEAR_ORDER,
+  payload: initialState,
+});
 
 const checkoutOrder = (payload) => ({
   type: CHECKOUT_ORDER,
@@ -38,6 +44,8 @@ const initialState = {};
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case CHECKOUT_ORDER:
+      return { ...payload };
+    case CLEAR_ORDER:
       return { ...payload };
     default:
       return state;

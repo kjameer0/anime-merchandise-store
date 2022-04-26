@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SingleOrderItem from './SingleOrderItem';
+import { clearOrder } from '../store/singleOrder';
 export class Confirmation extends Component {
+  componentWillUnmount() {
+    this.props.clearOrder();
+  }
   render() {
     const { order } = this.props;
+    if (order === {}) this.props.history.push('/cart');
     return (
       <div>
         <h1>Confirmation</h1>
@@ -19,5 +24,8 @@ export class Confirmation extends Component {
 }
 
 const mapStateToProps = (state) => ({ order: state.order });
+const mapDispatchToProps = (dispatch) => ({
+  clearOrder: () => dispatch(clearOrder()),
+});
 
-export default connect(mapStateToProps)(Confirmation);
+export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);
