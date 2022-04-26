@@ -11,21 +11,19 @@ import PayPalCheckout from './PayPalCheckout';
 export class Checkout extends Component {
   constructor(props) {
     super(props);
-    this.state = { token: false };
   }
   componentWillUnmount() {
     this.props.clearCart();
   }
   componentDidMount() {
     this.props.fetchCart();
-    this.setState({ token: window.localStorage.getItem('token') !== null });
   }
 
   render() {
     return (
       <div className="checkout">
         <div id="checkout-info">
-          {this.state.token ? (
+          {this.props.isLoggedIn ? (
             <React.Fragment>
               <Address />
               <PayPalCheckout />
@@ -50,6 +48,7 @@ export class Checkout extends Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
+  isLoggedIn: !!state.auth.id,
 });
 
 const mapDispatchToProps = (dispatch) => {
