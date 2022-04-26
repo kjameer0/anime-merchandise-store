@@ -5,7 +5,7 @@ import { clearCart } from '../store/cart';
 import { orderCheckoutThunk } from '../store/singleOrder';
 import SingleOrderItem from './SingleOrderItem';
 import SubTotal from './SubTotal';
-import { signup } from './AuthForm';
+import { Signup } from './AuthForm';
 import Address from './Address';
 import PayPalCheckout from './PayPalCheckout';
 
