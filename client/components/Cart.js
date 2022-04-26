@@ -21,11 +21,11 @@ export class Cart extends Component {
 
   handleCheckout(event) {
     event.preventDefault();
-    this.props.history.push('checkout');
+    this.props.history.push('/checkout');
   }
   render() {
     const userCart = this.props.cart || [];
-    console.log(userCart)
+    console.log(this.props);
     if (!userCart.length)
       return (
         <div id="empty-cart">

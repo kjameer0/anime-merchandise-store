@@ -1,11 +1,11 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const Sequelize = require('sequelize');
+const db = require('../db');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const SALT_ROUNDS = 5;
 
-const User = db.define("user", {
+const User = db.define('user', {
   username: {
     type: Sequelize.STRING,
     unique: true,
@@ -20,21 +20,41 @@ const User = db.define("user", {
     unique: true,
     validate: {
       isEmail: {
-        msg: "Must be a valid email address",
+        msg: 'Must be a valid email address',
       },
     },
   },
   firstName: {
     type: Sequelize.STRING,
-    defaultValue: "John",
+    defaultValue: 'John',
   },
   lastName: {
     type: Sequelize.STRING,
-    defaultValue: "Doe",
+    defaultValue: 'Doe',
   },
-  address: {
+  streetAddress: {
     type: Sequelize.TEXT,
-    defaultValue: "63 Flushing 293, Ave Bldg, Brooklyn, New York 11205, US",
+    defaultValue: '63 Flushing 293 Ave Bldg',
+  },
+  apartment: {
+    type: Sequelize.TEXT,
+    defaultValue: 'Apt 3n',
+  },
+  city: {
+    type: Sequelize.TEXT,
+    defaultValue: 'Brooklyn',
+  },
+  state: {
+    type: Sequelize.TEXT,
+    defaultValue: 'NY',
+  },
+  postalCode: {
+    type: Sequelize.TEXT,
+    defaultValue: '11205',
+  },
+  country: {
+    type: Sequelize.TEXT,
+    defaultValue: 'US',
   },
   admin: {
     type: Sequelize.BOOLEAN,
@@ -62,7 +82,7 @@ User.prototype.generateToken = function () {
 User.authenticate = async function ({ username, password }) {
   const user = await this.findOne({ where: { username } });
   if (!user || !(await user.correctPassword(password))) {
-    const error = Error("Incorrect username/password");
+    const error = Error('Incorrect username/password');
     error.status = 401;
     throw error;
   }
@@ -75,11 +95,11 @@ User.findByToken = async function (token) {
 
     const user = await User.findByPk(id);
     if (!user) {
-      throw "nooo";
+      throw 'nooo';
     }
     return user;
   } catch (ex) {
-    const error = Error("bad token");
+    const error = Error('bad token');
     error.status = 401;
     throw error;
   }
@@ -88,13 +108,13 @@ User.findByToken = async function (token) {
 /**
  * hooks
  */
-const hashPassword = async user => {
+const hashPassword = async (user) => {
   //in case the password has been changed, we want to encrypt it with bcrypt
-  if (user.changed("password")) {
+  if (user.changed('password')) {
     user.password = await bcrypt.hash(user.password, SALT_ROUNDS);
   }
 };
 
 User.beforeCreate(hashPassword);
 User.beforeUpdate(hashPassword);
-User.beforeBulkCreate(users => Promise.all(users.map(hashPassword)));
+User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));

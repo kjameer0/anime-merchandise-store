@@ -17,7 +17,7 @@ export class Confirmation extends Component {
           return <SingleOrderItem key={item.id} order={item} />;
         })}
 
-        <p>SubTotal : ${order.summary.totalPrice}</p>
+        <p>SubTotal : ${order.summary.totalPrice / 100}</p>
       </div>
     );
   }
