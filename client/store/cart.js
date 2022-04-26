@@ -38,16 +38,13 @@ export const setCartThunk = () => {
         dispatch(setCart(data));
         window.localStorage.setItem('cart', JSON.stringify([]));
       } else {
-        if ( cart && JSON.parse(window.localStorage.getItem('cart')).length) {
-          dispatch(setCart(JSON.parse(window.localStorage.getItem('cart'))));
-        } else {
-          if (JSON.parse(window.localStorage.getItem('cart')).length) {
+          if ( cart && JSON.parse(window.localStorage.getItem('cart')).length) {
             dispatch(setCart(JSON.parse(window.localStorage.getItem('cart'))));
           } else {
             window.localStorage.setItem('cart', JSON.stringify([]));
             dispatch(setCart([]));
           }
-        }
+        
       }
     } catch (error) {
       console.log(error);
@@ -96,6 +93,9 @@ export const addToCartThunk = (productInfo) => {
         });
         dispatch(addToCart(data));
       } else {
+        if (!cart) {
+          dispatch(setCart([]))
+        }   
         let localCart = JSON.parse(window.localStorage.getItem('cart'));
         let newCart;
         let cartItem;
