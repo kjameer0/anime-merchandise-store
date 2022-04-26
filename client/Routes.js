@@ -10,8 +10,8 @@ import Products from "./components/Products";
 import Cart from "./components/Cart";
 import Profile from "./components/Profile";
 
-import Checkout from './components/Checkout';
-import Confirmation from './components/Confirmation';
+import Checkout from "./components/Checkout";
+import Confirmation from "./components/Confirmation";
 
 /**
  * COMPONENT
@@ -47,6 +47,7 @@ class Routes extends Component {
             <Route path="/products" exact component={Products} />
             <Route path="/products/:id" exact component={ProductDetail} />
             <Route path="/checkout" exact component={Checkout} />
+            <Redirect to="/products" />
           </Switch>
         )}
       </div>
