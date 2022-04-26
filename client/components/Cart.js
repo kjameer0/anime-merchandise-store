@@ -9,6 +9,10 @@ import SubTotal from './SubTotal';
 export class Cart extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true,
+      noCart: false 
+     }
     this.handleCheckout = this.handleCheckout.bind(this);
   }
 
@@ -18,7 +22,7 @@ export class Cart extends Component {
   componentDidMount() {
     this.props.fetchCart();
   }
-
+ 
   handleCheckout(event) {
     event.preventDefault();
     this.props.history.push('checkout');
