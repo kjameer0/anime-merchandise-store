@@ -1,14 +1,22 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../store";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Button, IconButton, Menu, MenuItem, ListItemIcon } from "@material-ui/core";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+} from '@material-ui/core';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
-const useStyles = theme => ({
+const useStyles = (theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -17,16 +25,16 @@ const useStyles = theme => ({
   },
   navbarNav: {},
   cartInfo: {
-    position: "absolute",
-    background: "rgba(220, 220, 220, .5)",
-    borderRadius: "50%",
-    width: "20px",
-    height: "20px",
-    textAlign: "center",
-    display: "inline-block",
-    marginLeft: "3rem",
-    marginBottom: "1.5rem",
-    fontSize: "1rem",
+    position: 'absolute',
+    background: 'rgba(220, 220, 220, .5)',
+    borderRadius: '50%',
+    width: '20px',
+    height: '20px',
+    textAlign: 'center',
+    display: 'inline-block',
+    marginLeft: '3rem',
+    marginBottom: '1.5rem',
+    fontSize: '1rem',
   },
 });
 
@@ -53,7 +61,6 @@ class Navbar extends Component {
 
   render() {
     const { handleClick, isLoggedIn, cart, classes } = this.props;
-    console.log(cart.length);
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -66,7 +73,9 @@ class Navbar extends Component {
                 Products
               </Button>
               <IconButton color="inherit" component={Link} to="/cart">
-                {cart.length > 0 && <span className={classes.cartInfo}>{cart.length}</span>}
+                {cart.length > 0 && (
+                  <span className={classes.cartInfo}>{cart.length}</span>
+                )}
                 <ShoppingCartIcon />
               </IconButton>
               {!isLoggedIn && (
@@ -88,13 +97,21 @@ class Navbar extends Component {
                     onClose={this.handleClose}
                     anchorEl={this.state.anchorEl}
                   >
-                    <MenuItem component={Link} to="/home" onClick={this.handleClose}>
+                    <MenuItem
+                      component={Link}
+                      to="/home"
+                      onClick={this.handleClose}
+                    >
                       <ListItemIcon>
                         <AccountCircleIcon />
                       </ListItemIcon>
                       My Profile
                     </MenuItem>
-                    <MenuItem component={Link} to="/orders" onClick={this.handleClose}>
+                    <MenuItem
+                      component={Link}
+                      to="/orders"
+                      onClick={this.handleClose}
+                    >
                       <ListItemIcon>
                         <AssignmentIcon />
                       </ListItemIcon>
@@ -120,14 +137,14 @@ class Navbar extends Component {
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
     cart: state.cart,
   };
 };
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch) => {
   return {
     handleClick() {
       dispatch(logout());

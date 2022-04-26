@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setCartThunk } from '../store/cart';
 import { clearCart } from '../store/cart';
-import { orderCheckoutThunk } from '../store/singleOrder';
 import SingleOrderItem from './SingleOrderItem';
 import SubTotal from './SubTotal';
 import { Signup } from './AuthForm';
@@ -53,12 +52,10 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
 });
 
-const mapDispatchToProps = (dispatch, { history }) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchCart: () => dispatch(setCartThunk()),
     clearCart: () => dispatch(clearCart()),
-    checkout: (confirmation) =>
-      dispatch(orderCheckoutThunk(confirmation, history)),
   };
 };
 

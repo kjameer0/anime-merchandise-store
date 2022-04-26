@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { getCostTotal } from './SubTotal';
+import { orderCheckoutThunk } from '../store/singleOrder';
+import { compose } from 'redux';
 
 const CLIENT_ID =
   'AcA34C5GAOSbQO0YP7JuUdhfyzk0BlTYIt-y2UaTwolNq5NAddiOOcqKCUQHYLM6vW_KIYYJD1QLBBjj';
@@ -96,4 +99,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PayPalCheckout);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(PayPalCheckout);
