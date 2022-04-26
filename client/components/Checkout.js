@@ -5,7 +5,7 @@ import { clearCart } from '../store/cart';
 import { orderCheckoutThunk } from '../store/singleOrder';
 import SingleOrderItem from './SingleOrderItem';
 import SubTotal from './SubTotal';
-import { Login } from './AuthForm';
+import { signup } from './AuthForm';
 import Address from './Address';
 import PayPalCheckout from './PayPalCheckout';
 
@@ -32,7 +32,7 @@ export class Checkout extends Component {
               <PayPalCheckout />
             </React.Fragment>
           ) : (
-            <Login />
+            <Signup />
           )}
         </div>
         <div id="order-summary">
