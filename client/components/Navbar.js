@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Button, IconButton } from "@material-ui/core";
+import { AppBar, Toolbar, Button, IconButton, Menu, MenuItem, ListItemIcon } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 
 const useStyles = theme => ({
   root: {
@@ -29,6 +31,26 @@ const useStyles = theme => ({
 });
 
 class Navbar extends Component {
+  constructor() {
+    super();
+    this.state = {
+      anchorEl: null,
+    };
+    this.handleClose = this.handleClose.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+  }
+  handleOpen(e) {
+    this.setState({
+      anchorEl: e.currentTarget,
+    });
+  }
+
+  handleClose(e) {
+    this.setState({
+      anchorEl: null,
+    });
+  }
+
   render() {
     const { handleClick, isLoggedIn, cart, classes } = this.props;
     console.log(cart.length);
@@ -60,9 +82,28 @@ class Navbar extends Component {
               )}
               {isLoggedIn && (
                 <>
-                  <Button color="inherit" component={Link} to="/home">
-                    Home
-                  </Button>
+                  <Menu
+                    keepMounted
+                    open={Boolean(this.state.anchorEl)}
+                    onClose={this.handleClose}
+                    anchorEl={this.state.anchorEl}
+                  >
+                    <MenuItem component={Link} to="/home" onClick={this.handleClose}>
+                      <ListItemIcon>
+                        <AccountCircleIcon />
+                      </ListItemIcon>
+                      My Profile
+                    </MenuItem>
+                    <MenuItem component={Link} to="/orders" onClick={this.handleClose}>
+                      <ListItemIcon>
+                        <AssignmentIcon />
+                      </ListItemIcon>
+                      My Orders
+                    </MenuItem>
+                  </Menu>
+                  <IconButton color="inherit" onClick={this.handleOpen}>
+                    <AccountCircleIcon />
+                  </IconButton>
                   <Button color="inherit" onClick={handleClick}>
                     Logout
                   </Button>

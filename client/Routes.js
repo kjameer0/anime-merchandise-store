@@ -8,6 +8,10 @@ import { me } from "./store";
 import ProductDetail from "./components/ProductDetail";
 import Products from "./components/Products";
 import Cart from "./components/Cart";
+import Profile from "./components/Profile";
+
+import Checkout from "./components/Checkout";
+import Confirmation from "./components/Confirmation";
 
 /**
  * COMPONENT
@@ -29,7 +33,10 @@ class Routes extends Component {
             <Route path="/products" exact component={Products} />
             <Route path="/products/:id" exact component={ProductDetail} />
             <Route path="/cart" exact component={Cart} />
+            <Route path="/profile" exact component={Profile} />
             <Route path="/orders" component={Orders} />
+            <Route path="/checkout" exact component={Checkout} />
+            <Route path="/confirmation" exact component={Confirmation} />
             <Redirect to="/home" />
           </Switch>
         ) : (
@@ -39,6 +46,8 @@ class Routes extends Component {
             <Route path="/cart" exact component={Cart} />
             <Route path="/products" exact component={Products} />
             <Route path="/products/:id" exact component={ProductDetail} />
+            <Route path="/checkout" exact component={Checkout} />
+            <Redirect to="/products" />
           </Switch>
         )}
       </div>
@@ -71,7 +80,7 @@ class Routes extends Component {
 /**
  * CONTAINER
  */
-const mapState = (state) => {
+const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
@@ -79,7 +88,7 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me());
