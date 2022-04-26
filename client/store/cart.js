@@ -38,7 +38,7 @@ export const setCartThunk = () => {
         dispatch(setCart(data));
         window.localStorage.setItem('cart', JSON.stringify([]));
       } else {
-        if (JSON.parse(window.localStorage.getItem('cart')).length) {
+        if ( cart && JSON.parse(window.localStorage.getItem('cart')).length) {
           dispatch(setCart(JSON.parse(window.localStorage.getItem('cart'))));
         } else {
           if (JSON.parse(window.localStorage.getItem('cart')).length) {
@@ -86,6 +86,7 @@ export const deleteFromCartThunk = (productInfo) => {
 export const addToCartThunk = (productInfo) => {
   return async (dispatch) => {
     try {
+      const cart = window.localStorage.getItem('cart');
       const token = window.localStorage.getItem('token') || '';
       if (token) {
         const { data } = await axios.post('/api/cart', productInfo, {
@@ -98,7 +99,7 @@ export const addToCartThunk = (productInfo) => {
         let localCart = JSON.parse(window.localStorage.getItem('cart'));
         let newCart;
         let cartItem;
-        if (localCart.some((item) => item.product.id === productInfo.id)) {
+        if ( cart && localCart.some((item) => item.product.id === productInfo.id)) {
           newCart = localCart.map((item) => {
             if (item.product.id === productInfo.id) {
               item.quantity = item.quantity + 1;
