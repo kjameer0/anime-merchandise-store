@@ -28,7 +28,7 @@ export class Checkout extends Component {
         <div id="checkout-info">
           {this.state.token ? (
             <React.Fragment>
-              <Address user={this.props.user} />
+              <Address />
               <PayPalCheckout />
             </React.Fragment>
           ) : (
@@ -51,17 +51,6 @@ export class Checkout extends Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
-  user: {
-    email: state.auth.email,
-    firstName: state.auth.firstName,
-    lastName: state.auth.lastName,
-    streetAddress: state.auth.streetAddress,
-    apartment: state.auth.apartment,
-    city: state.auth.city,
-    state: state.auth.state,
-    postalCode: state.auth.postalCode,
-    country: state.auth.country,
-  },
 });
 
 const mapDispatchToProps = (dispatch, { history }) => {
