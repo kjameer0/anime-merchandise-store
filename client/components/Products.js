@@ -24,7 +24,7 @@ export class Products extends Component {
     this.handlePreviousPage = this.handlePreviousPage.bind(this);
   }
   componentDidMount() {
-    this.props.fetchProducts()
+    this.props.fetchProducts();
   }
   componentDidUpdate(prev) {
     if (!prev.products && this.props.products) {
@@ -53,9 +53,9 @@ export class Products extends Component {
       return (
         <div className="all-products">
           <Container>
-            <Typography variant="h2">Buy our stuff</Typography>
+            <Typography variant="h3">We have wares, if you have coin...</Typography>
             <Grid container>
-              {products.map((product) => (
+              {products.map(product => (
                 <Grid key={product.id} item xs={12} md={4}>
                   <ProductCard product={product} key={product.id} />
                 </Grid>
@@ -63,20 +63,12 @@ export class Products extends Component {
             </Grid>
           </Container>
           {this.state.page > 1 && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handlePreviousPage}
-            >
+            <Button variant="contained" color="primary" onClick={this.handlePreviousPage}>
               Previous Page
             </Button>
           )}
           {this.props.products.length > 0 && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleNextPage}
-            >
+            <Button variant="contained" color="primary" onClick={this.handleNextPage}>
               Next Page
             </Button>
           )}
@@ -86,12 +78,12 @@ export class Products extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ products: state.products });
+const mapStateToProps = state => ({ products: state.products });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   fetchProducts: (pageNumber = 1) => dispatch(setProductsThunk(pageNumber)),
   clearProducts: () => dispatch(clearProducts()),
-  addToCartFromProps: (id) => {
+  addToCartFromProps: id => {
     dispatch(addToCartThunk(id));
   },
 });
