@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { setCartThunk } from "../store/cart";
-import SelectQuantity from "./SelectQuantity";
-import { clearCart, deleteFromCartThunk, updateCartThunk } from "../store/cart";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setCartThunk } from '../store/cart';
+import SelectQuantity from './SelectQuantity';
+import { clearCart, deleteFromCartThunk, updateCartThunk } from '../store/cart';
 
 class SingleCartItem extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class SingleCartItem extends Component {
       quantity: cartItem.quantity,
       productId: cartItem.product.id,
     });
-    console.log(this.state)
+    console.log(this.state);
   }
   componentDidUpdate(prev) {
     if (prev.cart.quantity !== this.props.cart.quantity) {
@@ -34,13 +34,13 @@ class SingleCartItem extends Component {
     this.props.updateCartFromProps({
       quantity: Number(newVal),
       id: this.props.cart.id,
-      product:this.props.cart.product
+      product: this.props.cart.product,
     });
   }
 
   render() {
     const cart = this.props.cart || {};
-    
+
     return (
       <div className="cart" key={cart.id}>
         <div className="cart-data">
@@ -51,6 +51,7 @@ class SingleCartItem extends Component {
             <SelectQuantity
               quantity={cart.quantity}
               onChange={(event) => this.handleChange(event)}
+              onDelete={() => this.props.deleteFromCartProps(cart)}
             />
           </div>
         </div>
@@ -67,11 +68,11 @@ class SingleCartItem extends Component {
   }
 }
 
-const mapState =(state) => {
+const mapState = (state) => {
   return {
-    cartFromStore: state.cart
-  }
-}
+    cartFromStore: state.cart,
+  };
+};
 //export default connect(mapState)(SelectQuantity)
 const mapDispatch = (dispatch) => {
   return {

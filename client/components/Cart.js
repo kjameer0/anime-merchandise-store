@@ -11,8 +11,8 @@ export class Cart extends Component {
     super(props);
     this.state = {
       loading: true,
-      noCart: false 
-     }
+      noCart: false,
+    };
     this.handleCheckout = this.handleCheckout.bind(this);
   }
 
@@ -22,14 +22,13 @@ export class Cart extends Component {
   componentDidMount() {
     this.props.fetchCart();
   }
- 
+
   handleCheckout(event) {
     event.preventDefault();
     this.props.history.push('/checkout');
   }
   render() {
     const userCart = this.props.cart || [];
-    console.log(this.props);
     if (!userCart.length)
       return (
         <div id="empty-cart">
