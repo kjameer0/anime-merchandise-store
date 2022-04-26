@@ -1,27 +1,14 @@
-
 import React from 'react';
 import { connect } from 'react-redux';
 import SelectQuantity from './SelectQuantity';
 import { setCartThunk } from '../store/cart';
 
-import { Link } from "react-router-dom";
-<<<<<<< HEAD
-
-=======
-import { updateAuthThunk } from "../store/auth";
->>>>>>> user-profile
+import { Link } from 'react-router-dom';
+import { updateAuthThunk } from '../store/auth';
 /**
  * COMPONENT
  *
  */
-<<<<<<< HEAD
-function handleChange(e) {
-  console.log();
-}
-export const Home =  (props) => {
-  const { username, password, email, firstName, lastName, address } = props;
-  props.setCart()
-=======
 
 export const Home = (props) => {
   const {
@@ -39,7 +26,6 @@ export const Home = (props) => {
   //   location.reload();
   // }
 
->>>>>>> user-profile
   return (
     <div id="user-page-container">
       <h3 id="userwelcome">Welcome, {firstName}</h3>
@@ -146,13 +132,6 @@ const mapState = (state) => {
     address: state.auth.address,
   };
 };
-<<<<<<< HEAD
-const mapDispatch = (dispatch) => {
-  return {
-    setCart: () => dispatch(setCartThunk()),
-  }
-}
-=======
 
 const mapDispatch = (dispatch) => {
   return {
@@ -173,5 +152,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
->>>>>>> user-profile
 export default connect(mapState, mapDispatch)(Home);
