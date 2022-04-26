@@ -5,6 +5,13 @@ import { addProductThunk } from "../store/allProducts";
 import ProductCard from "./ProductCard";
 import { Grid, Container, Typography, Button } from "@material-ui/core";
 import { addToCartThunk } from "../store/cart";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  header: {
+    textAlign: "center",
+  },
+});
 
 export class Products extends Component {
   constructor() {
@@ -35,10 +42,14 @@ export class Products extends Component {
 
   render() {
     const { products } = this.props || [];
+    const { classes } = this.props;
+    console.log(classes);
     return (
       <div className="all-products">
         <Container>
-          <Typography variant="h2">Buy our stuff</Typography>
+          <Typography variant="h2" className={classes.header} style={{ textAlign: "center" }}>
+            Buy our stuff
+          </Typography>
           <Grid container>
             {products.map(product => (
               <Grid key={product.id} item xs={12} md={4}>
@@ -72,4 +83,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products));
