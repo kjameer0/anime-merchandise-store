@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setCartThunk } from '../store/cart';
-import SelectQuantity from './SelectQuantity';
-import { clearCart } from '../store/cart';
-import SingleCartItem from './SingleCartItem';
-import { orderCheckoutThunk } from '../store/singleOrder';
-import SubTotal from './SubTotal';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setCartThunk } from "../store/cart";
+import SelectQuantity from "./SelectQuantity";
+import { clearCart } from "../store/cart";
+import SingleCartItem from "./SingleCartItem";
+import { orderCheckoutThunk } from "../store/singleOrder";
+import SubTotal from "./SubTotal";
+import { Button } from "@material-ui/core";
+
 export class Cart extends Component {
   constructor(props) {
     super(props);
@@ -45,16 +47,18 @@ export class Cart extends Component {
 
         <SubTotal id="subtotal" items={this.props.cart} />
 
-        <button type="submit">checkout</button>
+        <Button color="primary" variant="contained" type="submit">
+          checkout
+        </Button>
       </form>
     );
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   return { cart: state.cart };
 };
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     fetchCart: () => dispatch(setCartThunk()),
     clearCart: () => dispatch(clearCart()),

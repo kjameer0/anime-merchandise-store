@@ -5,6 +5,13 @@ import { addProductThunk } from "../store/allProducts";
 import ProductCard from "./ProductCard";
 import { Grid, Container, Typography, Button } from "@material-ui/core";
 import { addToCartThunk } from "../store/cart";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  header: {
+    textAlign: "center",
+  },
+});
 
 export class Products extends Component {
   constructor() {
@@ -89,4 +96,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products));

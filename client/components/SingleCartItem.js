@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setCartThunk } from '../store/cart';
-import SelectQuantity from './SelectQuantity';
-import { clearCart, deleteFromCartThunk, updateCartThunk } from '../store/cart';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setCartThunk } from "../store/cart";
+import SelectQuantity from "./SelectQuantity";
+import { clearCart, deleteFromCartThunk, updateCartThunk } from "../store/cart";
+import { Typography, Button, Card } from "@material-ui/core";
+
 
 class SingleCartItem extends Component {
   constructor(props) {
@@ -42,42 +44,44 @@ class SingleCartItem extends Component {
     const cart = this.props.cart || {};
 
     return (
-      <div className="cart" key={cart.id}>
+      <Card className="cart" key={cart.id}>
         <div className="cart-data">
           <img src={cart.product.imageUrl} alt={cart.product.name} />
           <div className="cart-info">
-            <p className="product-name">{cart.product.name}</p>
-            <p className="cart-price">${cart.product.price}</p>
-            <SelectQuantity
-              quantity={cart.quantity}
-              onChange={(event) => this.handleChange(event)}
-              onDelete={() => this.props.deleteFromCartProps(cart)}
-            />
+            <Typography component="p" className="product-name">
+              {cart.product.name}
+            </Typography>
+            <Typography component="p" className="cart-price">
+              ${cart.product.price}
+            </Typography>
+            <SelectQuantity quantity={cart.quantity} onChange={event => this.handleChange(event)} />
           </div>
         </div>
         <div className="cart-delete">
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             type="button"
             onClick={() => this.props.deleteFromCartProps(cart)}
           >
             remove from cart
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     );
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     cartFromStore: state.cart,
   };
 };
 //export default connect(mapState)(SelectQuantity)
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
-    deleteFromCartProps: (id) => dispatch(deleteFromCartThunk(id)),
-    updateCartFromProps: (info) => dispatch(updateCartThunk(info)),
+    deleteFromCartProps: id => dispatch(deleteFromCartThunk(id)),
+    updateCartFromProps: info => dispatch(updateCartThunk(info)),
   };
 };
 

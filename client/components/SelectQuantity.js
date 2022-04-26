@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Select, InputLabel, FormControl } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+
 const DELETE = "DELETE";
 const MORE_OPTIONS = "MORE";
+
+const styles = theme => ({
+  options: {
+    cursor: "pointer",
+  },
+});
 
 class SelectQuantity extends Component {
   constructor(props) {
@@ -31,39 +40,30 @@ class SelectQuantity extends Component {
   }
   render() {
     const quantityList = Array.from({ length: 9 }, (_, i) => i + 1);
-    const { quantity, onDelete } = this.props;
-    console.log(quantity);
+    const { quantity, onDelete, classes } = this.props;
     return this.state.hasOption ? (
-      <select
-        defaultValue={quantity ? (quantity >= 10 ? MORE_OPTIONS : quantity) : 1}
-        onChange={this.handleChange}
-      >
-        {onDelete !== undefined ? (
-          <option value={DELETE}>0 (delete)</option>
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
-        {quantityList.map((number) => (
-          <option value={number} key={number}>
-            qty: {number}
+      <FormControl>
+        <InputLabel shrink>Quantity</InputLabel>
+        <Select defaultValue={quantity ? (quantity >= 10 ? MORE_OPTIONS : quantity) : 1} onChange={this.handleChange}>
+          {onDelete !== undefined ? <option value={DELETE}>0 (delete)</option> : <React.Fragment></React.Fragment>}
+          {quantityList.map(number => (
+            <option value={number} key={number} className={classes.options}>
+              {number}
+            </option>
+          ))}
+          <option value={MORE_OPTIONS} className={classes.options}>
+            10+
           </option>
-        ))}
-        <option value={MORE_OPTIONS}>10+</option>
-      </select>
+        </Select>
+      </FormControl>
     ) : (
-      <input
-        type="number"
-        name="quantity"
-        min="1"
-        max="100"
-        onChange={this.handleChange}
-      />
+      <input type="number" name="quantity" min="1" max="100" onChange={this.handleChange} />
     );
   }
 }
-const mapState = (state) => {
+const mapState = state => {
   return {
     cart: state.cart,
   };
 };
-export default connect(mapState)(SelectQuantity);
+export default connect(mapState)(withStyles(styles)(SelectQuantity));
