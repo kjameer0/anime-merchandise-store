@@ -1,18 +1,10 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  CardHeader,
-  Button,
-  CardActions,
-} from "@material-ui/core";
+import { Card, CardContent, CardMedia, Typography, CardHeader, Button, CardActions } from "@material-ui/core";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { addToCartThunk } from "../store/cart";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   media: {
     height: 140,
     width: "auto",
@@ -46,44 +38,46 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 200,
     flexGrow: 1,
   },
+  actions: {
+    "& *": {
+      marginLeft: "auto",
+    },
+  },
 }));
 
-const ProductCard = (props) => {
+const ProductCard = props => {
   const { product } = props;
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <CardHeader className={classes.header} title={product.name} />
       <Link to={`/products/${product.id}`}>
-        <CardMedia
-          component="img"
-          image={product.imageUrl}
-          title="a picture"
-          className={classes.media}
-        />
+        <CardMedia component="img" image={product.imageUrl} title="a picture" className={classes.media} />
       </Link>
       <CardContent className={classes.content}>
         <Typography component="p" className={classes.description}>
           ${product.price}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.actions}>
         <form
-          onSubmit={(evt) => {
+          onSubmit={evt => {
             evt.preventDefault();
-            props.addProductToCart(product)
+            props.addProductToCart(product);
           }}
         >
-          <Button type="submit">Add to Cart</Button>
+          <Button type="submit" variant="contained" color="primary">
+            Add to Cart
+          </Button>
         </form>
       </CardActions>
     </Card>
   );
 };
 
-const MapDispatch = (dispatch) => {
+const MapDispatch = dispatch => {
   return {
-    addProductToCart: (product) => dispatch(addToCartThunk(product)),
+    addProductToCart: product => dispatch(addToCartThunk(product)),
   };
 };
 export default connect(null, MapDispatch)(ProductCard);
