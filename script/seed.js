@@ -408,8 +408,7 @@ async function seed() {
         "Buzz Lightyear is a plastic bilingual spaceman action figure with wings, a laser, and a helmet, who accompanies Woody on his adventures in each movie. Buzz Lightyear's often repeated catchphrase is To infinity and beyond!.",
       price: 500.0,
       stock: 21,
-      imageUrl:
-        "https://static.wikia.nocookie.net/pixar/images/5/55/Buzz_Lightyear_ts4.png",
+      imageUrl: "https://i.ebayimg.com/images/g/l2YAAOSwbW1g2hGn/s-l1600.jpg",
     }),
     Product.create({
       name: "WALL•E",
