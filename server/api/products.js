@@ -5,7 +5,7 @@ const {
 } = require("../db");
 const { checkIsAdmin } = require("./utils");
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 9;
 
 // GET /api/products
 router.get("/", async (req, res, next) => {
