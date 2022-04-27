@@ -7,8 +7,8 @@ import { addToCartThunk } from "../store/cart";
 
 const useStyles = theme => ({
   image: {
-    width: "auto",
-    maxHeight: 400,
+    maxWidth: 400,
+    height: "auto",
     margin: theme.spacing(3),
   },
   description: {

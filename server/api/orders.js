@@ -1,26 +1,28 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
 const {
   models: { User, Order },
-} = require('../db');
-const { requireToken } = require('./utils');
+} = require("../db");
+const { requireToken } = require("./utils");
 
 // /api/orders
-router.get('/', requireToken, async (req, res, next) => {
+router.get("/", requireToken, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
         userId: req.user.id,
       },
     });
-    res.json(orders);
+    res.json(
+      orders.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+    );
   } catch (error) {
     next(error);
   }
 });
 
 // /api/orders/:id
-router.get('/:id', requireToken, async (req, res, next) => {
+router.get("/:id", requireToken, async (req, res, next) => {
   try {
     const orderId = req.params.id;
     const order = await Order.findOne({
@@ -36,7 +38,7 @@ router.get('/:id', requireToken, async (req, res, next) => {
 
 // /api/orders
 //POST Route
-router.post('/', requireToken, async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
     let { items, price } = req.body;
     const order = await Order.create({
@@ -52,7 +54,7 @@ router.post('/', requireToken, async (req, res, next) => {
   }
 });
 
-router.post('/checkout', requireToken, async (req, res, next) => {
+router.post("/checkout", requireToken, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { confirmationId } = req.body;

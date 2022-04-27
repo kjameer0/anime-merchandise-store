@@ -1,41 +1,37 @@
-import axios from 'axios';
+import axios from "axios";
 
-const CHECKOUT_ORDER = 'CHECKOUT_ORDER';
-const CLEAR_ORDER = 'CLEAR_ORDER';
+const CHECKOUT_ORDER = "CHECKOUT_ORDER";
+const CLEAR_ORDER = "CLEAR_ORDER";
 
 export const clearOrder = () => ({
   type: CLEAR_ORDER,
   payload: initialState,
 });
 
-const checkoutOrder = (payload) => ({
+const checkoutOrder = payload => ({
   type: CHECKOUT_ORDER,
   payload,
 });
 
 export const orderCheckoutThunk = (confirmationId, history) => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-      const token = window.localStorage.getItem('token') || '';
-      console.log(token);
-      if (token) {
-        const { data } = await axios.post(
-          '/api/orders/checkout',
-          { confirmationId },
-          {
-            headers: {
-              authorization: token,
-            },
-          }
-        );
-        dispatch(checkoutOrder(data));
-      } else {
-        //TODO: local storage
-      }
+      const token = window.localStorage.getItem('token');
+      if (!token) return;
+      const { data } = await axios.post(
+        '/api/orders/checkout',
+        { confirmationId },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      dispatch(checkoutOrder(data));
     } catch (error) {
       console.log(error);
     } finally {
-      history.push('/confirmation');
+      history.push("/confirmation");
     }
   };
 };
