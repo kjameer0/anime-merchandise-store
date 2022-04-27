@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     overflow: "hidden",
     display: "block",
     lineClamp: 1,
-  },
+  }, 
   root: {
     width: 350,
     height: 480,
@@ -33,6 +33,8 @@ const useStyles = makeStyles(theme => ({
   description: {
     textOverflow: "ellipsis ellipsis",
     whiteSpace: "nowrap",
+    fontSize: '18px',
+    textAlign: 'center'
   },
   content: {
     maxHeight: 200,
@@ -56,7 +58,7 @@ const ProductCard = props => {
       </Link>
       <CardContent className={classes.content}>
         <Typography component="p" className={classes.description}>
-          ${product.price}
+          If you can afford it it's:<br></br> ${product.price}
         </Typography>
       </CardContent>
       <CardActions className={classes.actions}>

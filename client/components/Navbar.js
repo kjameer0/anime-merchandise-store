@@ -14,8 +14,18 @@ const useStyles = theme => ({
   },
   logo: {
     flexGrow: 1,
+    fontSize: '25px'
   },
   navbarNav: {},
+  navButton: {
+    fontSize: '20px',
+    '&:hover' : {
+      background: 'green',
+      border: '1px solid black'
+    },
+    border: '1px solid clear',
+    padding: '25px'
+  },
   cartInfo: {
     position: "absolute",
     background: "rgba(220, 220, 220, .5)",
@@ -58,23 +68,34 @@ class Navbar extends Component {
         <AppBar position="static">
           <Toolbar>
             <div className={classes.logo}>
+<<<<<<< HEAD
               <h4>Pointy Reckoning</h4>
+=======
+              <h5>Weeb Mart</h5>
+>>>>>>> 426a112934d5168a85e9cf9924dcab532514a2a1
             </div>
             <div className={classes.navbarNav}>
-              <Button color="inherit" component={Link} to="/products">
+              <Button color="inherit" className={classes.navButton} component={Link} to="/products">
                 Products
               </Button>
+<<<<<<< HEAD
               <IconButton color="inherit" component={Link} to="/cart">
                 {cart.length > 0 && <span className={classes.cartInfo}>{cart.length}</span>}
+=======
+              <IconButton color="inherit" className={classes.navButton} component={Link} to="/cart">
+                {cart.length > 0 && (
+                  <span className={classes.cartInfo}>{cart.length}</span>
+                )}
+>>>>>>> 426a112934d5168a85e9cf9924dcab532514a2a1
                 <ShoppingCartIcon />
               </IconButton>
               {!isLoggedIn && (
                 <>
-                  <Button color="inherit" component={Link} to="/login">
+                  <Button color="inherit" className={classes.navButton} component={Link} to="/login">
                     Login
                   </Button>
 
-                  <Button color="inherit" to="/signup" component={Link}>
+                  <Button color="inherit" className={classes.navButton} to="/signup" component={Link}>
                     Sign up
                   </Button>
                 </>
