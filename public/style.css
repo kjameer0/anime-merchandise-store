@@ -251,3 +251,10 @@ nav a:hover {
   max-width: 50%;
   height: auto;
 }
+
+ #all-orders{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+ }
