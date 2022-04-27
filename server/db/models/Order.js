@@ -33,4 +33,13 @@ Order.checkout = async function (userId, confirmation) {
     items: orderInfo,
   };
 };
+
+Order.getOrder = async function (userId, confirmation) {
+  const order = await Order.findOne({ where: { userId, confirmation } });
+  const orderInfo = await CartItem.getCart(userId, order.id);
+  return {
+    summary: { confirmation: order.confirmation, totalPrice: order.totalPrice },
+    items: orderInfo,
+  };
+};
 module.exports = Order;

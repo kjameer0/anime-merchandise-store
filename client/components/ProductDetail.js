@@ -1,29 +1,32 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { setSingleProductThunk, clearSingleProduct } from "../store/singleProduct";
-import { Button, Typography, Grid } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { addToCartThunk } from "../store/cart";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {
+  setSingleProductThunk,
+  clearSingleProduct,
+} from '../store/singleProduct';
+import { Button, Typography, Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { addToCartThunk } from '../store/cart';
 
-const useStyles = theme => ({
+const useStyles = (theme) => ({
   image: {
-    width: "auto",
+    width: 'auto',
     maxHeight: 400,
     margin: theme.spacing(3),
   },
   description: {
     maxHeight: 300,
-    margin: "auto",
+    margin: 'auto',
     margin: theme.spacing(5),
   },
   price: {
-    color: "#B12765",
+    color: '#B12765',
     margin: theme.spacing(3),
   },
   buttonBox: {
-    display: "flex",
-    alignItems: "end",
-    justifyContent: "end",
+    display: 'flex',
+    alignItems: 'end',
+    justifyContent: 'end',
   },
 });
 
@@ -39,13 +42,9 @@ export class ProductDetail extends Component {
     this.props.clearProductFromProps();
   }
 
-  handleSubmit() {
-    const { id: productId } = this.props.product;
-    const userId = this.props.user.id;
-    const quantity = 1;
-    const product = { productId, userId, quantity };
-    console.log(product);
-    this.props.addToCart(product);
+  handleSubmit(evt) {
+    evt.preventDefault();
+    this.props.addProductToCart(this.props.product);
   }
   render() {
     const {
@@ -71,12 +70,7 @@ export class ProductDetail extends Component {
           <Typography component="p">{description}</Typography>
         </Grid>
         <Grid item xs className={classes.buttonBox}>
-          <form
-            onSubmit={evt => {
-              evt.preventDefault();
-              this.props.addProductToCart(this.props.product);
-            }}
-          >
+          <form onSubmit={this.handleSubmit}>
             <Button type="submit" variant="contained" color="primary">
               Add to Cart
             </Button>
@@ -84,7 +78,7 @@ export class ProductDetail extends Component {
         </Grid>
       </Grid>
 
-      /* 
+      /*
       <div className="product-detail">
         <h1> name: {name}</h1>
         <img src={imageUrl} />
@@ -97,15 +91,18 @@ export class ProductDetail extends Component {
   }
 }
 
-const mapState = state => ({
+const mapState = (state) => ({
   product: state.product,
   user: state.auth,
 });
 
-const mapDispatch = dispatch => ({
-  setSingleProductThunk: id => dispatch(setSingleProductThunk(id)),
+const mapDispatch = (dispatch) => ({
+  setSingleProductThunk: (id) => dispatch(setSingleProductThunk(id)),
   clearProductFromProps: () => dispatch(clearSingleProduct()),
-  addProductToCart: product => dispatch(addToCartThunk(product)),
+  addProductToCart: (product) => dispatch(addToCartThunk(product)),
 });
 
-export default connect(mapState, mapDispatch)(withStyles(useStyles)(ProductDetail));
+export default connect(
+  mapState,
+  mapDispatch
+)(withStyles(useStyles)(ProductDetail));
