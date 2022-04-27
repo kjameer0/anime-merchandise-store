@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setCartThunk } from "../store/cart";
 import SelectQuantity from "./SelectQuantity";
 import { clearCart, deleteFromCartThunk, updateCartThunk } from "../store/cart";
 import { Typography, Button, Card } from "@material-ui/core";
-
+import { Link } from "react-router-dom";
 
 class SingleCartItem extends Component {
   constructor(props) {
@@ -46,7 +45,9 @@ class SingleCartItem extends Component {
     return (
       <Card className="cart" key={cart.id}>
         <div className="cart-data">
-          <img src={cart.product.imageUrl} alt={cart.product.name} />
+          <Link to={`/products/${cart.product.id}`}>
+            <img src={cart.product.imageUrl} alt={cart.product.name} />
+          </Link>
           <div className="cart-info">
             <Typography component="p" className="product-name">
               {cart.product.name}
@@ -77,7 +78,7 @@ const mapState = state => {
     cartFromStore: state.cart,
   };
 };
-//export default connect(mapState)(SelectQuantity)
+
 const mapDispatch = dispatch => {
   return {
     deleteFromCartProps: id => dispatch(deleteFromCartThunk(id)),
